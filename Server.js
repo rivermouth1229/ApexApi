@@ -10,7 +10,7 @@ var path = require('path')
 
 
 // Get View
-app.use(express.static('html'))
+app.use(express.static(path.join(__dirname, 'html')))
 
 // Get Apex Status Json Data
 app.get('/GetStatus', cors(), (req, res) => {
