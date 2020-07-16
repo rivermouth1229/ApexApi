@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Apex Status</title>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+
+  <h1>Apex Status</h1>
+
+  <div id='status' class='container'>
+
+    <img class='bg-image' v-bind:src='backgroundPath'></img>
+
+
+    <div class='flex-column status-content'>
+
+      <div class='flex-row before'>
+        <img class='rank-icon' v-bind:src='rankIconPath'></img>
+        <div class='flex-column'>
+          <h2>{{ psnId }}</h2>
+          <span>Rank Score: {{ rankValue }}</span>
+        </div>
+      </div>
+
+      <img class='legend-image before' v-bind:src='legendImagePath'></img>
+    </div>
+
+
+  </div>
+
+
+
+
+<script>
+var app = new Vue({
+  //select html element
+  el: '#status',
+  //init data
+  data: {
+      psnId: '',
+      rankValue: 0,
+      rankIconPath: '',
+      legendImagePath: '',
+      backgroundPath: '',
+  },
+  //called when loaded
+  created: function(){
+    var self = this
+
+    let psnId = getParam('id')
+
+    fetch(`http://localhost:3000/GetStatus?id=${psnId}`).then(res => res.json())
+      .then(ret => {
+        let data = ret.data
+
+        if (typeof data === 'undefined') {
+          self.psnId = 'Player Not Found'
+          return
+        }
+
+        self.psnId        = data.platformInfo.platformUserId
+        self.rankValue    = data.segments[0].stats.rankScore.value
+        self.rankIconPath = data.segments[0].stats.rankScore.metadata.iconUrl
+
+        let activeLegend = data.metadata.activeLegendName
+        let query = data.segments.filter(x => x.metadata.name == activeLegend)
+        if (query.length === 1) {
+          self.legendImagePath = query[0].metadata.imageUrl
+          self.backgroundPath  = query[0].metadata.bgImageUrl
+        }
+
+      })
+  },
+})
+
+function getParam(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+</script>
+
+<style>
+body {
+  width: 100%;
+  background-color: #232323;
+  color: white;
+}
+
+.container {
+  width: 100%;
+  position: relative;
+}
+
+.bg-image {
+  opacity: 0.3;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  z-index: 1;
+  width: 100%;
+}
+
+.status-content {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.flex-row {
+  display: flex;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.before {
+  position: relative;
+  z-index: 2;
+}
+
+.rank-icon {
+  height: 100px;
+}
+
+.legend-image {
+  width: 300px;
+}
+
+
+</style>
+
+</body>
+</html>
