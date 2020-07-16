@@ -8,8 +8,12 @@ var cors = require('cors')
 var path = require('path')
 
 
+
 // Get View
-app.use(express.static(path.join(__dirname, 'html')));
+app.use(express.static(path.join(__dirname, 'html')))
+
+// Get home page
+app.get('/', (req, res, next) => res.render('/Index.html'))
 
 // Get Apex Status Json Data
 app.get('/GetStatus', cors(), (req, res) => {
