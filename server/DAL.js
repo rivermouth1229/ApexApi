@@ -5,11 +5,13 @@ require('date-utils')
 require('dotenv').config();
 var { Pool } = require('pg')
 var pool = new Pool({
-  host: process.env.ENV_HOST,
-  databese: process.env.ENV_DB,
-  user: process.env.ENV_USER,
-  port: 5432,
-  password: process.env.ENV_PASS,
+  //host: process.env.ENV_HOST,
+  //databese: process.env.ENV_DB,
+  //user: process.env.ENV_USER,
+  //port: 5432,
+  //password: process.env.ENV_PASS,
+
+  connectionString: process.env.DATABASE_URL,
 })
 
 // データベースにユーザ情報を保存する関数
