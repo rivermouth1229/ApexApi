@@ -52,26 +52,21 @@ var app = new Vue({
 
     let psnId = getParam('id')
 
-    fetch(`https://rivermouth-apex-status.herokuapp.com/GetStatus?id=${psnId}`).then(res => res.json())
+    //fetch(`https://rivermouth-apex-status.herokuapp.com/GetStatus?id=${psnId}`).then(res => res.json())
+    fetch(`localhost:5000/GetStatus?id=${psnId}`).then(res => res.json())
       .then(ret => {
-        let data = ret.data
+        console.log(ret)
 
-        if (typeof data === 'undefined') {
+        if (typeof data === null) {
           self.psnId = 'Player Not Found'
           return
         }
 
-        self.psnId        = data.platformInfo.platformUserId
-        self.rankValue    = data.segments[0].stats.rankScore.value
-        self.rankIconPath = data.segments[0].stats.rankScore.metadata.iconUrl
-
-        let activeLegend = data.metadata.activeLegendName
-        let query = data.segments.filter(x => x.metadata.name == activeLegend)
-        if (query.length === 1) {
-          self.legendImagePath = query[0].metadata.imageUrl
-          self.backgroundPath  = query[0].metadata.bgImageUrl
-        }
-
+        self.psnId           = ret.psnId
+        self.rankValue       = ret.rankValue
+        self.rankIconPath    = ret.rankIconPath
+        self.legendImagePath = ret.legendImagePath
+        self.backgroundPath  = ret.backgroundPath
       })
   },
 })

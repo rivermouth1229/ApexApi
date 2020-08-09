@@ -24,9 +24,38 @@ function GetStatusFromApexApi(baseUrl, user, isSession = false) {
   })
 }
 
+// Adjust api data to more usable data
+function AdjustStatusData(apiData) {
+  let data = apiData.data
+
+  if (typeof data === 'undefined') {
+    return null
+  }
+
+  let ret = {}
+
+  ret.psnId        = data.platformInfo.platformUserId
+  ret.rankValue    = data.segments[0].stats.rankScore.value
+  ret.rankIconPath = data.segments[0].stats.rankScore.metadata.iconUrl
+
+  let activeLegend = data.metadata.activeLegendName
+  let query = data.segments.filter(x => x.metadata.name == activeLegend)
+  if (query.length === 1) {
+    ret.legendImagePath = query[0].metadata.imageUrl
+    ret.backgroundPath  = query[0].metadata.bgImageUrl
+  }
+
+  return ret;
+}
+
+
 
 exports.getStatus = (user) => {
   return GetStatusFromApexApi(baseUrl, user)
+}
+
+exports.adjust = (data) => {
+  return AdjustStatusData(data)
 }
 
 exports.getMatch = (user) => {
