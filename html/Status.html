@@ -7,16 +7,11 @@
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 </head>
 <body>
-
   <h1>Apex Status</h1>
 
   <div id='status' class='container'>
-
     <img class='bg-image' v-bind:src='backgroundPath'></img>
-
-
     <div class='flex-column status-content'>
-
       <div class='flex-row before'>
         <img class='rank-icon' v-bind:src='rankIconPath'></img>
         <div class='flex-column'>
@@ -24,11 +19,8 @@
           <span>Rank Score: {{ rankValue }}</span>
         </div>
       </div>
-
       <img class='legend-image before' v-bind:src='legendImagePath'></img>
     </div>
-
-
   </div>
 
 
@@ -67,6 +59,11 @@ var app = new Vue({
       })
   },
 })
+
+fetch(`localhost:5000/GetStatus?id=${getParam('id')}`)
+  .then(res => res.json())
+  .then(data => console.log(data))
+
 
 function getParam(name, url) {
     if (!url) url = window.location.href;

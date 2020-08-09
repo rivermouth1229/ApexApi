@@ -15,7 +15,7 @@ Controller.prototype = {
         // 使いやすいようにデータを整形
         let adjustedData = apex.adjust(data)
         // データベースにデータを保存
-        //saveApexStatus(adjustedData)
+        dal.saveUserStatus(data)
         // Httpメソッドのレスポンス
         res.json(adjustedData)
       })
@@ -25,10 +25,14 @@ Controller.prototype = {
       })
   },
 
-
-  saveApexStatus: (data) => {
-    dal.saveUserStatus(data)
-  },
+  getRankScoreHistory: (psnId, res) => {
+    dal.getRankScoreHistory(psnId)
+    .then(data => res.json(data))
+    .catch(e => {
+      console.error(e)
+      res.send({})
+    })
+  }
 }
 
 exports.controller = new Controller()

@@ -7,8 +7,6 @@ var app = express()
 var cors = require('cors')
 var path = require('path')
 
-
-
 // Get View
 app.use(express.static('html'))
 
@@ -18,6 +16,11 @@ app.get('/GetStatus', cors(), (req, res) => {
   methods.controller.getApexStatus(psnId, res)
 })
 
+// Get Apex Rank Score History
+app.get('/GetHistory', cors(), (req, res) => {
+  let psnId = req.query['id']
+  methods.controller.getRankScoreHistory(psnId, res)
+})
 
 
 // Start listning
