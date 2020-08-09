@@ -12,7 +12,6 @@ Controller.prototype = {
   getApexStatus: (psnId, res) => {
     apex.getStatus(psnId)
       .then(data => {
-        console.log('getApexStatus')
         // 使いやすいようにデータを整形
         let adjustedData = apex.adjust(data)
         // データベースにデータを保存

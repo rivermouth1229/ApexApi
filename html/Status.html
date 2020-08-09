@@ -52,11 +52,8 @@ var app = new Vue({
 
     let psnId = getParam('id')
 
-    //fetch(`https://rivermouth-apex-status.herokuapp.com/GetStatus?id=${psnId}`).then(res => res.json())
-    fetch(`localhost:5000/GetStatus?id=${psnId}`).then(res => res.json())
+    fetch(`https://rivermouth-apex-status.herokuapp.com/GetStatus?id=${psnId}`).then(res => res.json())
       .then(ret => {
-        console.log(ret)
-
         if (typeof data === null) {
           self.psnId = 'Player Not Found'
           return
