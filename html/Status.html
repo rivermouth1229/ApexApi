@@ -60,7 +60,7 @@ var app = new Vue({
   },
 })
 
-fetch(`localhost:5000/GetStatus?id=${getParam('id')}`)
+fetch(`https://rivermouth-apex-status.herokuapp.com/GetHistory?id=${getParam('id')}`)
   .then(res => res.json())
   .then(data => console.log(data))
 
