@@ -22,6 +22,7 @@ function SaveUserStatus(data) {
   }
 
   let psnId = data.psnId
+  console.log(`psnid:${psnId}`)
 
   ;( async () => {
     console.log('before connect')
