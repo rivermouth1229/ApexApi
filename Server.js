@@ -7,18 +7,22 @@ var app = express()
 var cors = require('cors')
 var path = require('path')
 
+methods.controller.test()
+
 // Get View
 app.use(express.static('html'))
 
 // Get Apex Status Json Data
 app.get('/GetStatus', cors(), (req, res) => {
   let psnId = req.query['id']
+  console.log('GetStatus called. ID:' + psnId)
   methods.controller.getApexStatus(psnId, res)
 })
 
 // Get Apex Rank Score History
 app.get('/GetHistory', cors(), (req, res) => {
   let psnId = req.query['id']
+  console.log('GetHistory called. ID:' + psnId)
   methods.controller.getRankScoreHistory(psnId, res)
 })
 

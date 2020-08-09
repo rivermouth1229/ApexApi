@@ -88,6 +88,25 @@ exports.getRankScoreHistory = (psnId) => {
   return GetRankHistory(psnId)
 }
 
+exports.test = () => {
+  ;( async () => {
+    console.log('test start')
+    let client = await pool.connect()
+
+    // =================================
+    console.log('select user start')
+    let user = await client.query('SELECT id FROM users WHERE psnid=$1', ['rivermouth1229'])
+    if (user.rows.length === 1) {
+      console.log(user.rows[0].id)
+    }
+
+    // =================================
+    console.log('insert user start')
+    let result = await client.query('INSERT INTO users (psnId) VALUES ($1))', ['rivermouth1229'])
+
+  })
+}
+
 
 
 // createコマンド
