@@ -7,8 +7,6 @@ var app = express()
 var cors = require('cors')
 var path = require('path')
 
-methods.controller.test()
-
 // Get View
 app.use(express.static('html'))
 

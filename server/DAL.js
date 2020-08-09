@@ -22,15 +22,13 @@ function SaveUserStatus(data) {
   }
 
   let psnId = data.psnId
-  console.log(`psnid:${psnId}`)
+  console.log(`Save user data. psnId:${psnId}`)
 
   ;( async () => {
-    console.log('before connect')
     let client = await pool.connect()
 
     // =================================
     // ユーザIDの取得
-    console.log('before select')
     let userId = -1
     let user = await client.query('SELECT id FROM users WHERE psnid=$1', [psnId])
     if (user.rows.length === 1) {
@@ -53,11 +51,10 @@ function SaveUserStatus(data) {
       'UPDATE userdata SET rankscore=$3 WHERE userid=$1 AND date=$2' :
       'INSERT INTO userdata VALUES ($1, $2, $3)'
 
-    console.log('before upsert')
     await client.query(upsertQuery, [userId, today, data.rankValue])
-
-
     console.log('Upsert user data.')
+
+    await pool.end()
   })()
   .catch(e => console.log(e))
 }
@@ -78,6 +75,8 @@ async function GetRankHistory(psnId) {
   // =================================
   // データの取得
   let result = await client.query('SELECT * FROM userdata WHERE userid=$1', [userId])
+
+  await pool.end()
   return result.rows
 }
 

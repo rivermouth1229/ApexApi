@@ -33,8 +33,6 @@ Controller.prototype = {
       res.send({})
     })
   },
-
-  test: () => {dal.test()}
 }
 
 exports.controller = new Controller()
