@@ -24,10 +24,12 @@ function SaveUserStatus(data) {
   let psnId = data.psnId
 
   ;( async () => {
+    console.log('before connect')
     let client = await pool.connect()
 
     // =================================
     // ユーザIDの取得
+    console.log('before select')
     let userId = -1
     let user = await client.query('SELECT id FROM users WHERE psnid=$1', [psnId])
     if (user.rows.length === 1) {
