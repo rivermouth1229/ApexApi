@@ -53,8 +53,6 @@ function SaveUserStatus(data) {
 
     await client.query(upsertQuery, [userId, today, data.rankValue])
     console.log('Upsert user data.')
-
-    await pool.end()
   })()
   .catch(e => console.log(e))
 }
@@ -75,8 +73,6 @@ async function GetRankHistory(psnId) {
   // =================================
   // データの取得
   let result = await client.query('SELECT * FROM userdata WHERE userid=$1', [userId])
-
-  await pool.end()
   return result.rows
 }
 
