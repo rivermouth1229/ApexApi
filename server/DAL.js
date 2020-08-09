@@ -9,7 +9,7 @@ var pool = new Pool({
   databese: process.env.ENV_DB,
   user: process.env.ENV_USER,
   port: 5432,
-  password: process.env.ENV_PASSWORD,
+  password: process.env.ENV_PASS,
 })
 
 // データベースにユーザ情報を保存する関数
