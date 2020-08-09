@@ -15,7 +15,7 @@ Controller.prototype = {
         // 使いやすいようにデータを整形
         let adjustedData = apex.adjust(data)
         // データベースにデータを保存
-        dal.saveUserStatus(data)
+        dal.saveUserStatus(adjustedData)
         // Httpメソッドのレスポンス
         res.json(adjustedData)
       })
