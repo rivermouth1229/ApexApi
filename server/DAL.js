@@ -50,7 +50,9 @@ function SaveUserStatus(data) {
       'UPDATE userdata SET rankscore=$3 WHERE userid=$1 AND date=$2' :
       'INSERT INTO userdata VALUES ($1, $2, $3)'
 
+    console.log('before upsert')
     await client.query(upsertQuery, [userId, today, data.rankValue])
+
 
     console.log('Upsert user data.')
   })()
