@@ -71,7 +71,14 @@ fetch(`https://rivermouth-apex-status.herokuapp.com/GetHistory?id=${getParam('id
     let container = document.getElementById('graph')
     let items = [];
     data.forEach(row => {
-      items.push({ x: makeDateStr(row.date), y: row.rankscore, label: { content: row.rankscore } })
+      items.push({
+        x: makeDateStr(row.date),
+        y: row.rankscore,
+        label: {
+          content: row.rankscore,
+          className: 'white',
+        }
+      })
     })
 
     // ランク帯別背景の設定
@@ -195,6 +202,10 @@ body {
   right: 0;
   margin: auto;
   margin-top: 20px;
+}
+
+.white {
+  fill: white;
 }
 
 .bronze { fill: #B08A1C, stroke: #B08A1C }
