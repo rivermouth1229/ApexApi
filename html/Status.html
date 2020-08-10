@@ -98,25 +98,19 @@ fetch(`https://rivermouth-apex-status.herokuapp.com/GetHistory?id=${getParam('id
     items.push({ x: end  , y: 12000, group: 5})
 
     let groups = new vis.DataSet();
-    groups.add({ id: 0, content: 'bronze' , className: 'bronze'   , option: { shaded: { orientation: 'bottom' } }, })
-    groups.add({ id: 1, content: 'silver' , className: 'silver'   , option: { shaded: { orientation: 'bottom' } }, })
-    groups.add({ id: 2, content: 'gold'   , className: 'gold'     , option: { shaded: { orientation: 'bottom' } }, })
-    groups.add({ id: 3, content: 'platinum', className: 'platinum', option: { shaded: { orientation: 'bottom' } }, })
-    groups.add({ id: 4, content: 'diamond' , className: 'diamond' , option: { shaded: { orientation: 'bottom' } }, })
-    groups.add({ id: 5, content: 'master'  , className: 'master'  , option: { shaded: { orientation: 'bottom' } }, })
-
+    groups.add({ id: 0, content: 'bronze' , className: 'bronze'   , options: { shaded: { orientation: 'bottom' } }, })
+    groups.add({ id: 1, content: 'silver' , className: 'silver'   , options: { shaded: { orientation: 'bottom' } }, })
+    groups.add({ id: 2, content: 'gold'   , className: 'gold'     , options: { shaded: { orientation: 'bottom' } }, })
+    groups.add({ id: 3, content: 'platinum', className: 'platinum', options: { shaded: { orientation: 'bottom' } }, })
+    groups.add({ id: 4, content: 'diamond' , className: 'diamond' , options: { shaded: { orientation: 'bottom' } }, })
+    groups.add({ id: 5, content: 'master'  , className: 'master'  , options: { shaded: { orientation: 'bottom' } }, })
 
     let options = {
       interpolation: false,
-      min: start,
-      max: end,
+      min: '2020-08-07',
+      max: '2020-08-19',
       dataAxis: { left: { range: { min: 0, max: 12000 } } },
     }
-
-    console.log(items)
-    console.log(groups)
-    console.log(options)
-
 
     var graph = new vis.Graph2d(container, new vis.DataSet(items), groups, options)
 
@@ -208,9 +202,9 @@ body {
   fill: white;
 }
 
-.bronze { fill: #B08A1C; stroke: #B08A1C; }
+.bronze { fill: #6A3805; stroke: #6A3805; }
 .silver { fill: #C9CACA; stroke: #C9CACA; }
-.gold { fill: #E3AB00; stroke: #E3AB00; }
+.gold { fill: #B9B037; stroke: #B9B037; }
 .platinum { fill: skyblue; stroke: skyblue; }
 .diamond { fill: blue; stroke: blue; }
 .master { fill: purple; stroke: purple; }
