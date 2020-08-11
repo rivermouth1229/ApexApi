@@ -7,6 +7,9 @@ var app = express()
 var cors = require('cors')
 var path = require('path')
 
+// Set static path for javascript node_modules
+app.use('/scripts', express.static(__dirname + '/node_modules/'));
+
 // Get View
 app.use(express.static('html'))
 
