@@ -84,13 +84,13 @@ fetch(`https://rivermouth-apex-status.herokuapp.com/GetHistory?id=${getParam('id
     // ランク帯別背景の設定
     let start = '2020-08-08'
     let end = '2020-08-18'
-    [1200, 2800, 4800, 7200, 10000, 12000].forEach((num, index) => {
+    ;[1200, 2800, 4800, 7200, 10000, 12000].forEach((num, index) => {
       items.push({ x: start, y: num , group: index})
       items.push({ x: end  , y: num , group: index})
     })
 
-    let groups = new vis.DataSet();
-    ['bronze', 'silver', 'gold', 'platinum', 'diamond', 'master'].forEach((elem, index) => {
+    let groups = new vis.DataSet()
+    ;['bronze', 'silver', 'gold', 'platinum', 'diamond', 'master'].forEach((elem, index) => {
       groups.add({
         id: index,
         content: elem,
