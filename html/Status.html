@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
 <title>Apex Status</title>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet">
+<script src="../node_modules/vis-timeline/standalone/umd/vis-timeline-graph2d.min.js"></script>
+<link href="../node_modules/vis-timeline/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
   <h1>Apex Status</h1>
@@ -84,26 +84,23 @@ fetch(`https://rivermouth-apex-status.herokuapp.com/GetHistory?id=${getParam('id
     // ランク帯別背景の設定
     let start = '2020-08-08'
     let end = '2020-08-18'
-    items.push({ x: start, y: 1200 , group: 0})
-    items.push({ x: end  , y: 1200 , group: 0})
-    items.push({ x: start, y: 2800 , group: 1})
-    items.push({ x: end  , y: 2800 , group: 1})
-    items.push({ x: start, y: 4800 , group: 2})
-    items.push({ x: end  , y: 4800 , group: 2})
-    items.push({ x: start, y: 7200 , group: 3})
-    items.push({ x: end  , y: 7200 , group: 3})
-    items.push({ x: start, y: 10000, group: 4})
-    items.push({ x: end  , y: 10000, group: 4})
-    items.push({ x: start, y: 12000, group: 5})
-    items.push({ x: end  , y: 12000, group: 5})
+    [1200, 2800, 4800, 7200, 10000, 12000].forEach((num, index) => {
+      items.push({ x: start, y: num , group: index})
+      items.push({ x: end  , y: num , group: index})
+    })
 
     let groups = new vis.DataSet();
-    groups.add({ id: 0, content: 'bronze' , className: 'bronze'   , options: { shaded: { orientation: 'bottom' } }, })
-    groups.add({ id: 1, content: 'silver' , className: 'silver'   , options: { shaded: { orientation: 'bottom' } }, })
-    groups.add({ id: 2, content: 'gold'   , className: 'gold'     , options: { shaded: { orientation: 'bottom' } }, })
-    groups.add({ id: 3, content: 'platinum', className: 'platinum', options: { shaded: { orientation: 'bottom' } }, })
-    groups.add({ id: 4, content: 'diamond' , className: 'diamond' , options: { shaded: { orientation: 'bottom' } }, })
-    groups.add({ id: 5, content: 'master'  , className: 'master'  , options: { shaded: { orientation: 'bottom' } }, })
+    ['bronze', 'silver', 'gold', 'platinum', 'diamond', 'master'].forEach((elem, index) => {
+      groups.add({
+        id: index,
+        content: elem,
+        className: elem,
+        options: {
+          drawPoints: false,
+          shaded: { orientation: 'bottom' }
+        },
+      })
+    })
 
     let options = {
       interpolation: false,
