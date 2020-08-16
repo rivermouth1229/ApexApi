@@ -42,8 +42,9 @@ Controller.prototype = {
           apex.getStatus(user)
             .then(data => dal.saveUserStatus(apex.adjust(data)))
             .catch(e => console.error(e))
-      })
+        })
       .catch(e => console.error(e))
+    })
   },
 }
 
