@@ -37,14 +37,13 @@ Controller.prototype = {
   saveAllUserData: () => {
     dal.getAllUsers()
       .then(users => {
-        console.log(users)
         users.forEach(user => {
           apex.getStatus(user.psnid)
             .then(data => dal.saveUserStatus(apex.adjust(data)))
             .catch(e => console.error(e))
         })
+      })
       .catch(e => console.error(e))
-    })
   },
 }
 
