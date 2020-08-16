@@ -27,6 +27,12 @@ app.get('/GetHistory', cors(), (req, res) => {
   methods.controller.getRankScoreHistory(psnId, res)
 })
 
+// Save data of all users in db
+app.get('/SaveAllUserData', (req, res) => {
+  console.log('Call saveAllUserData')
+  methods.controller.saveAllUserData()
+})
+
 
 // Start listning
 app.listen(process.env.PORT || 3000, function () {

@@ -27,11 +27,23 @@ Controller.prototype = {
 
   getRankScoreHistory: (psnId, res) => {
     dal.getRankScoreHistory(psnId)
-    .then(data => res.json(data))
-    .catch(e => {
-      console.error(e)
-      res.send({})
-    })
+      .then(data => res.json(data))
+      .catch(e => {
+        console.error(e)
+        res.send({})
+      })
+  },
+
+  saveAllUserData: () => {
+    dal.getAllUsers()
+      .then(users => {
+        console.log(users)
+        users.forEach(user => {
+          apex.getStatus(user)
+            .then(data => dal.saveUserStatus(apex.adjust(data)))
+            .catch(e => console.error(e))
+      })
+      .catch(e => console.error(e))
   },
 }
 

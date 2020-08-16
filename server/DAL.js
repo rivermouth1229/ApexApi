@@ -76,7 +76,11 @@ async function GetRankHistory(psnId) {
   return result.rows
 }
 
-
+async function GetAllUsers() {
+  let client = await pool.connect()
+  let users = await client.query('SELECT psnid FROM users')
+  return users
+}
 
 exports.saveUserStatus = (data) => {
   SaveUserStatus(data)
@@ -86,29 +90,6 @@ exports.getRankScoreHistory = (psnId) => {
   return GetRankHistory(psnId)
 }
 
-exports.test = () => {
-  ;( async () => {
-    console.log('test start')
-    let client = await pool.connect()
-
-    // =================================
-    console.log('select user start')
-    let user = await client.query('SELECT id FROM users WHERE psnid=$1', ['rivermouth1229'])
-    if (user.rows.length === 1) {
-      console.log(user.rows[0].id)
-    }
-
-    // =================================
-    console.log('insert user start')
-    let result = await client.query('INSERT INTO users (psnId) VALUES ($1))', ['rivermouth1229'])
-
-  })
+exports.getAllUsers = () => {
+  return GetAllUsers()
 }
-
-
-
-// createコマンド
-/*
-create table Users (id serial, psnId varchar(16), PRIMARY KEY (psnId));
-create table UserData (userId integer, date varchar(10), rankScore integer);
-*/
