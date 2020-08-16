@@ -30,7 +30,14 @@ app.get('/GetHistory', cors(), (req, res) => {
 // Save data of all users in db
 app.get('/SaveAllUserData', (req, res) => {
   console.log('Call saveAllUserData')
-  methods.controller.saveAllUserData()
+  try {
+    methods.controller.saveAllUserData()
+    res.send('success')
+  }
+  catch(e) {
+    console.log(e)
+    res.send('failed')
+  }
 })
 
 

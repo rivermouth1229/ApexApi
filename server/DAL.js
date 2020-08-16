@@ -79,7 +79,7 @@ async function GetRankHistory(psnId) {
 async function GetAllUsers() {
   let client = await pool.connect()
   let users = await client.query('SELECT psnid FROM users')
-  return users
+  return users.rows
 }
 
 exports.saveUserStatus = (data) => {
