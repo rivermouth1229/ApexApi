@@ -86,8 +86,8 @@ fetch(`https://rivermouth-apex-status.herokuapp.com/GetHistory?id=${getParam('id
     })
 
     // ランク帯別ラインの設定
-    let start = '2020-08-07'
-    let end = '2020-08-19'
+    let start = '2020-08-17'
+    let end = '2020-09-28'
     let tiers = [
       { id: 7, rank: 1200 , name: 'silver' },   // darkblue: 7
       { id: 1, rank: 2800 , name: 'gold' },   // gold: 1
@@ -118,8 +118,8 @@ fetch(`https://rivermouth-apex-status.herokuapp.com/GetHistory?id=${getParam('id
     let options = {
       //legend: true,
       interpolation: false,
-      min: '2020-08-07',
-      max: '2020-08-19',
+      min: '2020-08-18',
+      max: '2020-08-28',
       dataAxis: { left: { range: { min: 0, max: 12000 } } },
     }
 
