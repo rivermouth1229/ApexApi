@@ -1,9 +1,9 @@
 'use strict'
 
 // HACK Keyはherokuの環境変数に入れる
-const apiKey = '7ed80aab-4422-43fa-bace-231477edfdb0'
 const baseUrl = 'https://public-api.tracker.gg/v2/apex/standard/profile/psn/'
-const user = 'rivermouth1229'
+const user = process.env.ENV_APEX_API_USER
+const apiKey = process.env.ENV_APEX_API_KEY
 
 const fetch = require('node-fetch');
 
