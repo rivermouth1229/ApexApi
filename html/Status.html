@@ -100,8 +100,8 @@ fetch(`https://rivermouth-apex-status.herokuapp.com/GetHistory?id=${getParam('id
     let groups = new vis.DataSet()
     tiers.forEach(tier => {
       // データに境界線となるデータを追加
-      items.add({ x: start, y: tier.rank, group: tier.id })
-      items.add({ x: end  , y: tier.rank, group: tier.id })
+      items.unshift({ x: start, y: tier.rank, group: tier.id })
+      items.unshift({ x: end  , y: tier.rank, group: tier.id })
 
       // スタイル用にグループを作成
       groups.add({
@@ -119,7 +119,7 @@ fetch(`https://rivermouth-apex-status.herokuapp.com/GetHistory?id=${getParam('id
       //legend: true,
       interpolation: false,
       min: '2020-08-18',
-      max: '2020-08-28',
+      max: '2020-09-28',
       dataAxis: { left: { range: { min: 0, max: 12000 } } },
     }
 
