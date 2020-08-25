@@ -3,8 +3,8 @@
 // ======================================
 // controller
 
-var apex = require('./Apex.js');
-var dal = require('./DAL.js');
+var apex = require('./Apex.js')
+var dal = require('./DAL.js')
 
 var Controller = function() {}
 

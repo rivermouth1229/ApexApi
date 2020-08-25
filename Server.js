@@ -1,11 +1,14 @@
 'use strict'
 
-var apex = require('./server/Apex.js')
-var methods = require('./server/HttpMethods.js')
+// express
 var express = require('express')
 var app = express()
 var cors = require('cors')
-var path = require('path')
+
+// 自作モジュール
+var apex = require('./server/Apex.js')
+var dal = require('./server/DAL.js')
+
 
 // Set static path for javascript node_modules
 app.use('/scripts', express.static(__dirname + '/node_modules/'));
@@ -17,21 +20,50 @@ app.use(express.static('html'))
 app.get('/GetStatus', cors(), (req, res) => {
   let psnId = req.query['id']
   console.log('GetStatus called. ID:' + psnId)
-  methods.controller.getApexStatus(psnId, res)
+
+  apex.getStatus(psnId)
+    .then(data => {
+      // 使いやすいようにデータを整形
+      let adjustedData = apex.adjust(data)
+      // データベースにデータを保存
+      dal.saveUserStatus(adjustedData)
+      // Httpメソッドのレスポンス
+      res.json(adjustedData)
+    })
+    .catch(e => {
+      console.error(e)
+      res.send({})
+    })
 })
 
 // Get Apex Rank Score History
 app.get('/GetHistory', cors(), (req, res) => {
   let psnId = req.query['id']
   console.log('GetHistory called. ID:' + psnId)
-  methods.controller.getRankScoreHistory(psnId, res)
+
+  dal.getRankScoreHistory(psnId)
+    .then(data => res.json(data))
+    .catch(e => {
+      console.error(e)
+      res.send({})
+    })
 })
 
 // Save data of all users in db
 app.get('/SaveAllUserData', (req, res) => {
   console.log('Call saveAllUserData')
   try {
-    methods.controller.saveAllUserData()
+    dal.getAllUsers()
+      .then(users => {
+        users.forEach(user => {
+          apex.getStatus(user.psnid)
+            .then(data => dal.saveUserStatus(apex.adjust(data)))
+            .catch(e => console.error(e))
+        })
+      })
+      .catch(e => console.error(e))
+
+    // 保存は非同期で実行、レスポンスはさっさと返す
     res.send('success')
   }
   catch(e) {
