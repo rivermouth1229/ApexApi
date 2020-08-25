@@ -53,12 +53,15 @@ app.get('/GetHistory', cors(), (req, res) => {
 app.get('/SaveAllUserData', (req, res) => {
   console.log('Call saveAllUserData')
   try {
+    // 全ユーザを取得し、3秒インターバルでAPI取得とDBへの保存を行う
     dal.getAllUsers()
       .then(users => {
-        users.forEach(user => {
-          apex.getStatus(user.psnid)
-            .then(data => dal.saveUserStatus(apex.adjust(data)))
-            .catch(e => console.error(e))
+        users.forEach((user, index) => {
+          setTimeout(() => {
+            apex.getStatus(user.psnid)
+              .then(data => dal.saveUserStatus(apex.adjust(data)))
+              .catch(e => console.error(e))
+          }, 3000 * index)
         })
       })
       .catch(e => console.error(e))
