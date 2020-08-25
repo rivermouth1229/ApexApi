@@ -71,37 +71,24 @@ fetch(`https://rivermouth-apex-status.herokuapp.com/GetHistory?id=${getParam('id
     // タグ
     let container = document.getElementById('graph')
 
-    // ランクデータの作成
-    let items = new vis.DataSet();
-    data.forEach(row => {
-      items.add({
-        x: makeDateStr(row.date),
-        y: row.rankscore,
-        group: 3,
-        label: {
-          content: row.rankscore,
-          className: 'my-data',
-        }
-      })
-    })
-
     // ランク帯別ラインの設定
     let start = '2020-08-17'
     let end = '2020-09-28'
     let tiers = [
       { id: 7, rank: 1200 , name: 'silver' },   // darkblue: 7
-      { id: 1, rank: 2800 , name: 'gold' },   // gold: 1
-      { id: 5, rank: 4800 , name: 'platinum' },     // skyblue: 5
-      { id: 0, rank: 7200 , name: 'diamond' }, // blue: 0
-      { id: 2, rank: 10000, name: 'master' },  // purple: 2
-      { id: 4, rank: 12000, name: 'predator' },   // red: 4
+      { id: 1, rank: 2800 , name: 'gold' },     // gold: 1
+      { id: 5, rank: 4800 , name: 'platinum' }, // skyblue: 5
+      { id: 0, rank: 7200 , name: 'diamond' },  // blue: 0
+      { id: 2, rank: 10000, name: 'master' },   // purple: 2
+      { id: 4, rank: 12000, name: 'predator' }, // red: 4
     ]
 
+    let items  = new vis.DataSet()
     let groups = new vis.DataSet()
     tiers.forEach(tier => {
       // データに境界線となるデータを追加
-      items.unshift({ x: start, y: tier.rank, group: tier.id })
-      items.unshift({ x: end  , y: tier.rank, group: tier.id })
+      items.add({ x: start, y: tier.rank, group: tier.id })
+      items.add({ x: end  , y: tier.rank, group: tier.id })
 
       // スタイル用にグループを作成
       groups.add({
@@ -114,7 +101,20 @@ fetch(`https://rivermouth-apex-status.herokuapp.com/GetHistory?id=${getParam('id
       })
     })
 
-    // 表示⌥
+    // ランクデータの作成
+    data.forEach(row => {
+      items.add({
+        x: makeDateStr(row.date),
+        y: row.rankscore,
+        group: 3,
+        label: {
+          content: row.rankscore,
+          className: 'my-data',
+        }
+      })
+    })
+
+    // 表示設定
     let options = {
       //legend: true,
       interpolation: false,
