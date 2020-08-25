@@ -1,6 +1,5 @@
 'use strict'
 
-// HACK Keyはherokuの環境変数に入れる
 const baseUrl = 'https://public-api.tracker.gg/v2/apex/standard/profile/psn/'
 const user = process.env.ENV_APEX_API_USER
 const apiKey = process.env.ENV_APEX_API_KEY
@@ -9,10 +8,10 @@ const fetch = require('node-fetch');
 
 // Get data from Apex Api
 // returns: promise
-function GetStatusFromApexApi(baseUrl, user, isSession = false) {
-  let sessionStr = isSession ? '/sessions' : ''
+function GetStatusFromApexApi(baseUrl, user) {
   return new Promise((resolve, reject) => {
-    fetch(`${baseUrl}${user}?TRN-Api-Key=${apiKey}${sessionStr}`)
+    let apiUrl = `${baseUrl}${user}?TRN-Api-Key=${apiKey}`
+    fetch(apiUrl)
       .then(response => response.json())
       .then(data => resolve(data))
       .catch(e => {
@@ -54,8 +53,4 @@ exports.getStatus = (user) => {
 
 exports.adjust = (data) => {
   return AdjustStatusData(data)
-}
-
-exports.getMatch = (user) => {
-  return GetStatusFromApexApi(baseUrl, user, true)
 }
