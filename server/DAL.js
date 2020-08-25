@@ -5,12 +5,6 @@ require('date-utils')
 require('dotenv').config();
 var { Pool } = require('pg')
 var pool = new Pool({
-  //host: process.env.ENV_HOST,
-  //databese: process.env.ENV_DB,
-  //user: process.env.ENV_USER,
-  //port: 5432,
-  //password: process.env.ENV_PASS,
-
   connectionString: process.env.DATABASE_URL,
 })
 
@@ -18,7 +12,7 @@ var pool = new Pool({
 // 今はランクスコアのみ
 function SaveUserStatus(data) {
   if (data === null) {
-    return;
+    return
   }
 
   let psnId = data.psnId
@@ -47,7 +41,7 @@ function SaveUserStatus(data) {
 
     // 一度今日日付のデータを取得し、あれば上書き、なければ追加する
     let result = await client.query('SELECT * FROM userdata WHERE userid=$1 AND date=$2', [userId, today])
-    let upsertQuery = result.rows.length === 1 ?
+    let upsertQuery = (result.rows.length === 1) ?
       'UPDATE userdata SET rankscore=$3 WHERE userid=$1 AND date=$2' :
       'INSERT INTO userdata VALUES ($1, $2, $3)'
 
@@ -76,6 +70,7 @@ async function GetRankHistory(psnId) {
   return result.rows
 }
 
+// 全ユーザのPSN IDを取得する関数
 async function GetAllUsers() {
   let client = await pool.connect()
   let users = await client.query('SELECT psnid FROM users')

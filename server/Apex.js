@@ -13,11 +13,8 @@ function GetStatusFromApexApi(baseUrl, user, isSession = false) {
   let sessionStr = isSession ? '/sessions' : ''
   return new Promise((resolve, reject) => {
     fetch(`${baseUrl}${user}?TRN-Api-Key=${apiKey}${sessionStr}`)
-      .then(response => {
-        response.json()
-          .then(data => resolve(data))
-          .catch(e => reject(e))
-      })
+      .then(response => response.json())
+      .then(data => resolve(data))
       .catch(e => {
         console.error(e)
         reject(e)
