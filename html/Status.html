@@ -27,6 +27,7 @@
 
   <br/>
   <h1>Rank History</h1>
+  <button id='toggleLable' onclick='toggleLabel()'>Toggle Label</button>
   <div id='graph' class='graph-area'></div>
 
 
@@ -127,6 +128,7 @@ fetch(`https://rivermouth-apex-status.herokuapp.com/GetHistory?id=${getParam('id
   })
 
 
+
 function getParam(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
@@ -140,6 +142,19 @@ function getParam(name, url) {
 function makeDateStr(str) {
   let tmp = str.slice(0, 4) + '-' + str.slice(4)
   return tmp.slice(0, 7) + '-' + tmp.slice(7)
+}
+
+function toggleLabel() {
+  let labels = document.getElementsByClassName('vis-label')
+  for (let i = 0; i < labels.length; i++) {
+    let label = labels[i]
+    if (label.style.display === 'block') {
+      label.style.display = 'none'
+    }
+    else {
+      label.style.display = 'block'
+    }
+  }
 }
 
 </script>
