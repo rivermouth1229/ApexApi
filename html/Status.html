@@ -5,6 +5,124 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
   <title>Apex Status</title>
   <link href="/scripts/vis-timeline/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+  <style>
+    body {
+      width: 100%;
+      background-color: #232323;
+      color: white;
+    }
+
+    h1 a {
+      text-decoration:none;
+      color: white;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+
+    .container {
+      width: 100%;
+      position: relative;
+    }
+
+    .bg-image {
+      opacity: 0.3;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      margin: auto;
+      z-index: 1;
+      width: 100%;
+    }
+
+    .status-content {
+      width: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+
+    .flex-row {
+      display: flex;
+    }
+
+    .flex-column {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .before {
+      position: relative;
+      z-index: 2;
+    }
+
+    .rank-icon {
+      height: 100px;
+    }
+
+    .legend-image {
+      width: 300px;
+    }
+
+    .graph-area {
+      width: 80%;
+      left: 0;
+      right: 0;
+      margin: auto;
+      margin-top: 20px;
+    }
+
+    .my-data {
+      fill: white;
+    }
+
+    .bronze { fill: #6A3805; stroke: #6A3805; }
+    .silver { fill: #C9CACA; stroke: #C9CACA; }
+    .gold { fill: #B9B037; stroke: #B9B037; }
+    .platinum { fill: skyblue; stroke: skyblue; }
+    .diamond { fill: blue; stroke: blue; }
+    .master { fill: purple; stroke: purple; }
+
+    .path.bronze.fill,
+    .path.silver.fill,
+    .path.gold.fill,
+    .path.platinum.fill,
+    .path.diamond.fill,
+    .path.master.fill {
+      stroke: none;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+       font-size: 10vw;
+       margin-left: 0.5vw;
+      }
+      h2 {
+       font-size: 6vw;
+      }
+      body {
+       font-size: 4vw;
+      }
+      .status-content,
+      .legend-image {
+       width: 80vw;
+      }
+      .rank-icon {
+       height: 12vh;
+      }
+
+      .graph-area {
+       width: 100%;
+      }
+    }
+
+  </style>
 </head>
 <body>
   <h1><a href='https://rivermouth-apex-status.herokuapp.com/'>Apex Status</a></h1>
@@ -157,125 +275,6 @@ function toggleLabel() {
 }
 
 </script>
-
-<style>
-body {
-  width: 100%;
-  background-color: #232323;
-  color: white;
-}
-
-h1 a {
-  text-decoration:none;
-  color: white;
-}
-
-[v-cloak] {
-  display: none;
-}
-
-.container {
-  width: 100%;
-  position: relative;
-}
-
-.bg-image {
-  opacity: 0.3;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  margin: auto;
-  z-index: 1;
-  width: 100%;
-}
-
-.status-content {
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  left: 0;
-  right: 0;
-  margin: auto;
-}
-
-.flex-row {
-  display: flex;
-}
-
-.flex-column {
-  display: flex;
-  flex-direction: column;
-}
-
-.before {
-  position: relative;
-  z-index: 2;
-}
-
-.rank-icon {
-  height: 100px;
-}
-
-.legend-image {
-  width: 300px;
-}
-
-.graph-area {
-  width: 80%;
-  left: 0;
-  right: 0;
-  margin: auto;
-  margin-top: 20px;
-}
-
-.my-data {
-  fill: white;
-}
-
-.bronze { fill: #6A3805; stroke: #6A3805; }
-.silver { fill: #C9CACA; stroke: #C9CACA; }
-.gold { fill: #B9B037; stroke: #B9B037; }
-.platinum { fill: skyblue; stroke: skyblue; }
-.diamond { fill: blue; stroke: blue; }
-.master { fill: purple; stroke: purple; }
-
-.path.bronze.fill,
-.path.silver.fill,
-.path.gold.fill,
-.path.platinum.fill,
-.path.diamond.fill,
-.path.master.fill {
-  stroke: none;
-}
-
-@media (max-width: 480px) {
-   h1 {
-     font-size: 10vw;
-     margin-left: 0.5vw;
-   }
-   h2 {
-     font-size: 6vw;
-   }
-   body {
-     font-size: 4vw;
-   }
-   .status-content,
-   .legend-image {
-     width: 80vw;
-   }
-   .rank-icon {
-     height: 12vh;
-   }
-
-   .graph-area {
-     width: 100%;
-   }
- }
-
-</style>
 
 </body>
 </html>
