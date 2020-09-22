@@ -4,7 +4,7 @@ const baseUrl = 'https://public-api.tracker.gg/v2/apex/standard/profile/psn/'
 const user = process.env.ENV_APEX_API_USER
 const apiKey = process.env.ENV_APEX_API_KEY
 
-const fetch = require('node-fetch');
+const fetch = require('node-fetch')
 
 // Get data from Apex Api
 // returns: promise

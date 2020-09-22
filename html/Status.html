@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-<title>Apex Status</title>
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script src="/scripts/vis-timeline/standalone/umd/vis-timeline-graph2d.min.js"></script>
-<link href="/scripts/vis-timeline/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+  <title>Apex Status</title>
+  <link href="/scripts/vis-timeline/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
   <h1><a href='https://rivermouth-apex-status.herokuapp.com/'>Apex Status</a></h1>
@@ -30,7 +28,8 @@
   <button id='toggleLable' onclick='toggleLabel()'>Toggle Label</button>
   <div id='graph' class='graph-area'></div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="/scripts/vis-timeline/standalone/umd/vis-timeline-graph2d.min.js"></script>
 <script>
 var app = new Vue({
   //select html element
