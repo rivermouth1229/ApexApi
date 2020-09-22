@@ -9,7 +9,7 @@
 <body>
   <h1><a href='https://rivermouth-apex-status.herokuapp.com/'>Apex Status</a></h1>
 
-  <div id='status' class='container'>
+  <div id='status' class='container' v-cloak>
     <img class='bg-image' v-bind:src='backgroundPath'></img>
     <div class='flex-column status-content'>
       <div class='flex-row before'>
@@ -168,6 +168,10 @@ body {
 h1 a {
   text-decoration:none;
   color: white;
+}
+
+[v-cloak] {
+  display: none;
 }
 
 .container {
