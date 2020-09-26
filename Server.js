@@ -25,8 +25,6 @@ app.get('/GetStatus', cors(), (req, res) => {
     .then(data => {
       // 使いやすいようにデータを整形
       let adjustedData = apex.adjust(data)
-      // データベースにデータを保存
-      dal.saveUserStatus(adjustedData)
       // Httpメソッドのレスポンス
       res.json(adjustedData)
     })
