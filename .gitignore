@@ -1,0 +1,12 @@
+
+# Directories
+bash/
+node_modules/
+refs/
+objects/
+
+# Unused old file
+myMatch.json
+server/HttpMethods.js
+html/Vue.html
+GetApex.js
