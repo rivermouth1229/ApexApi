@@ -87,7 +87,6 @@ function AddTodaysData(destination, mergeData) {
   let today = new Date().toFormat("YYYYMMDD")
 
   let todaysData = destination.filter(e => e.date === today)
-  console.log(todaysData)
   switch (todaysData.length) {
     case 0:
       destination.push({date: today, rankscore: mergeData})
@@ -99,16 +98,14 @@ function AddTodaysData(destination, mergeData) {
       console.log('Why there are multiple data!?')
       break;
   }
-  console.log(destination)
-
 }
 
 exports.saveUserStatus = (data) => {
   SaveUserStatus(data)
 }
 
-exports.getRankScoreHistory = (psnId) => {
-  return GetRankHistory(psnId)
+exports.getRankScoreHistory = (psnId, scoreFromApi) => {
+  return GetRankHistory(psnId, scoreFromApi)
 }
 
 exports.getAllUsers = () => {
