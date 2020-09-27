@@ -169,12 +169,12 @@ var app = new Vue({
     fetch(`https://rivermouth-apex-status.herokuapp.com/GetStatus?id=${psnId}`)
       .then(res => res.json())
       .then(ret => {
-        if (typeof data === null) {
+        if (typeof ret === null) {
           self.psnId = 'Player Not Found'
           return
         }
 
-        console.log(data)
+        console.log(ret)
 
         self.psnId           = ret.psnId
         self.rankValue       = ret.rankValue
