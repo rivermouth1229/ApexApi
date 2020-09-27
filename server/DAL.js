@@ -86,7 +86,7 @@ async function GetAllUsers() {
 function AddTodaysData(destination, mergeData) {
   let today = new Date().toFormat("YYYYMMDD")
 
-  let todaysData = destination.find(e => e.date === today)
+  let todaysData = destination.filter(e => e.date === today)
   switch (todaysData.length) {
     case 0:
       destination.push({date: today, rankscore: mergeData})
