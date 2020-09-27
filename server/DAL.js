@@ -53,7 +53,7 @@ function SaveUserStatus(data) {
 
 // ランクスコアの履歴データを取得する
 // HACK SQLを一つにしたい
-async function GetRankHistory(psnId) {
+async function GetRankHistory(psnId, scoreFromApi) {
   let client = await pool.connect()
 
   // =================================
@@ -67,6 +67,11 @@ async function GetRankHistory(psnId) {
   // =================================
   // データの取得
   let result = await client.query('SELECT * FROM userdata WHERE userid=$1', [userId])
+
+  // =================================
+  // 今日のデータはAPIから取得した値にする
+  AddTodaysData(result.rows, scoreFromApi)
+
   return result.rows
 }
 
@@ -75,6 +80,24 @@ async function GetAllUsers() {
   let client = await pool.connect()
   let users = await client.query('SELECT psnid FROM users')
   return users.rows
+}
+
+// 履歴データに今日のデータを追加/更新する関数
+function AddTodaysData(destination, mergeData) {
+  let today = new Date().toFormat("YYYYMMDD")
+
+  let todaysData = destination.find(e => e.date === today)
+  switch (todaysData.length) {
+    case 0:
+      destination.push({date: today, rankscore: mergeData})
+      break;
+    case 1:
+      todaysData[0].rankscore = mergeData
+      break;
+    default:
+      console.log('Why there are multiple data!?')
+      break;
+  }
 }
 
 exports.saveUserStatus = (data) => {
