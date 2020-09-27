@@ -143,7 +143,7 @@
 
   <br/>
   <h1>Rank History</h1>
-  <button id='toggleLable' onclick='toggleLabel()'>Toggle Label</button>
+  <button id='toggleLable' onclick='ToggleLabel()'>Toggle Label</button>
   <div id='graph' class='graph-area'></div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
@@ -164,7 +164,7 @@ var app = new Vue({
   created: function(){
     var self = this
 
-    let psnId = getParam('id')
+    let psnId = GetParam('id')
 
     fetch(`https://rivermouth-apex-status.herokuapp.com/GetStatus?id=${psnId}`)
       .then(res => res.json())
@@ -174,20 +174,22 @@ var app = new Vue({
           return
         }
 
-        console.log(ret)
-
         self.psnId           = ret.psnId
         self.rankValue       = ret.rankValue
         self.rankIconPath    = ret.rankIconPath
         self.legendImagePath = ret.legendImagePath
         self.backgroundPath  = ret.backgroundPath
+
+        if (typeof ret.historyData != 'undefined' && ret.historyData.length > 0) {
+          ShowHistoryGraph(ret.historyData)
+        }
       })
   },
 })
 
 
 // Vis.jsでグラフを描画する
-function showHistoryGraph(data) {
+function ShowHistoryGraph(data) {
   // タグ
   let container = document.getElementById('graph')
 
@@ -224,7 +226,7 @@ function showHistoryGraph(data) {
   // ランクデータの作成
   data.forEach(row => {
     items.add({
-      x: makeDateStr(row.date),
+      x: MakeDateStr(row.date),
       y: row.rankscore,
       group: 3,
       label: {
@@ -248,7 +250,7 @@ function showHistoryGraph(data) {
 
 
 
-function getParam(name, url) {
+function GetParam(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
@@ -258,12 +260,12 @@ function getParam(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-function makeDateStr(str) {
+function MakeDateStr(str) {
   let tmp = str.slice(0, 4) + '-' + str.slice(4)
   return tmp.slice(0, 7) + '-' + tmp.slice(7)
 }
 
-function toggleLabel() {
+function ToggleLabel() {
   let labels = document.getElementsByClassName('vis-label')
   for (let i = 0; i < labels.length; i++) {
     let label = labels[i]
