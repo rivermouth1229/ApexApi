@@ -166,12 +166,15 @@ var app = new Vue({
 
     let psnId = getParam('id')
 
-    fetch(`https://rivermouth-apex-status.herokuapp.com/GetStatus?id=${psnId}`).then(res => res.json())
+    fetch(`https://rivermouth-apex-status.herokuapp.com/GetStatus?id=${psnId}`)
+      .then(res => res.json())
       .then(ret => {
         if (typeof data === null) {
           self.psnId = 'Player Not Found'
           return
         }
+
+        console.log(data)
 
         self.psnId           = ret.psnId
         self.rankValue       = ret.rankValue
@@ -182,67 +185,66 @@ var app = new Vue({
   },
 })
 
-// グラフ描画　Vis.jsを使用
-fetch(`https://rivermouth-apex-status.herokuapp.com/GetHistory?id=${getParam('id')}`)
-  .then(res => res.json())
-  .then(data => {
-    // タグ
-    let container = document.getElementById('graph')
 
-    // ランク帯別ラインの設定
-    let start = '2020-08-17'
-    let end = '2020-09-28'
-    let tiers = [
-      { id: 7, rank: 1200 , name: 'silver' },   // darkblue: 7
-      { id: 1, rank: 2800 , name: 'gold' },     // gold: 1
-      { id: 5, rank: 4800 , name: 'platinum' }, // skyblue: 5
-      { id: 0, rank: 7200 , name: 'diamond' },  // blue: 0
-      { id: 2, rank: 10000, name: 'master' },   // purple: 2
-      { id: 4, rank: 12000, name: 'predator' }, // red: 4
-    ]
+// Vis.jsでグラフを描画する
+function showHistoryGraph(data) {
+  // タグ
+  let container = document.getElementById('graph')
 
-    let items  = new vis.DataSet()
-    let groups = new vis.DataSet()
-    tiers.forEach(tier => {
-      // データに境界線となるデータを追加
-      items.add({ x: start, y: tier.rank, group: tier.id })
-      items.add({ x: end  , y: tier.rank, group: tier.id })
+  // ランク帯別ラインの設定
+  let start = '2020-08-17'
+  let end = '2020-09-28'
+  let tiers = [
+    { id: 7, rank: 1200 , name: 'silver' },   // darkblue: 7
+    { id: 1, rank: 2800 , name: 'gold' },     // gold: 1
+    { id: 5, rank: 4800 , name: 'platinum' }, // skyblue: 5
+    { id: 0, rank: 7200 , name: 'diamond' },  // blue: 0
+    { id: 2, rank: 10000, name: 'master' },   // purple: 2
+    { id: 4, rank: 12000, name: 'predator' }, // red: 4
+  ]
 
-      // スタイル用にグループを作成
-      groups.add({
-        id: tier.id,
-        content: tier.name,
-        //className: tier.name,
-        options: {
-          shaded: { orientation: 'bottom' },
-        },
-      })
+  let items  = new vis.DataSet()
+  let groups = new vis.DataSet()
+  tiers.forEach(tier => {
+    // データに境界線となるデータを追加
+    items.add({ x: start, y: tier.rank, group: tier.id })
+    items.add({ x: end  , y: tier.rank, group: tier.id })
+
+    // スタイル用にグループを作成
+    groups.add({
+      id: tier.id,
+      content: tier.name,
+      //className: tier.name,
+      options: {
+        shaded: { orientation: 'bottom' },
+      },
     })
-
-    // ランクデータの作成
-    data.forEach(row => {
-      items.add({
-        x: makeDateStr(row.date),
-        y: row.rankscore,
-        group: 3,
-        label: {
-          content: row.rankscore,
-          className: 'my-data',
-        }
-      })
-    })
-
-    // 表示設定
-    let options = {
-      //legend: true,
-      interpolation: false,
-      min: '2020-08-18',
-      max: '2020-09-28',
-      dataAxis: { left: { range: { min: 0, max: 12000 } } },
-    }
-
-    var graph = new vis.Graph2d(container, items, groups, options)
   })
+
+  // ランクデータの作成
+  data.forEach(row => {
+    items.add({
+      x: makeDateStr(row.date),
+      y: row.rankscore,
+      group: 3,
+      label: {
+        content: row.rankscore,
+        className: 'my-data',
+      }
+    })
+  })
+
+  // 表示設定
+  let options = {
+    //legend: true,
+    interpolation: false,
+    min: '2020-08-18',
+    max: '2020-09-28',
+    dataAxis: { left: { range: { min: 0, max: 12000 } } },
+  }
+
+  var graph = new vis.Graph2d(container, items, groups, options)
+}
 
 
 

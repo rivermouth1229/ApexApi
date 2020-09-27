@@ -9,6 +9,9 @@ var cors = require('cors')
 var apex = require('./server/Apex.js')
 var dal = require('./server/DAL.js')
 
+// other
+require('date-utils')
+
 
 // Set static path for javascript node_modules
 app.use('/scripts', express.static(__dirname + '/node_modules/'))
@@ -25,8 +28,25 @@ app.get('/GetStatus', cors(), (req, res) => {
     .then(data => {
       // 使いやすいようにデータを整形
       let adjustedData = apex.adjust(data)
-      // Httpメソッドのレスポンス
-      res.json(adjustedData)
+
+      // ステータス履歴の取得
+      dal.getRankScoreHistory(psnId)
+        .then(historyData => {
+          let today = new Date().toFormat("YYYYMMDD")
+          //historyData[today] = adjustedData.rankValue
+
+          // レスポンスするデータに履歴データを追加
+          adjustedData.historyData = historyData
+
+          // Httpメソッドのレスポンス
+          res.json(adjustedData)
+        })
+        .catch(e => {
+          console.error(e)
+          res.send({})
+        })
+
+
     })
     .catch(e => {
       console.error(e)
