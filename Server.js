@@ -34,7 +34,7 @@ app.get('/GetStatus', cors(), (req, res) => {
           adjustedData.historyData = historyData
 
           // シーズンに関するデータを付与
-          adjustedData.sesaonData = dal.getSeasonData(season)
+          adjustedData.seasonData = dal.getSeasonData(season)
 
           // Httpメソッドのレスポンス
           res.json(adjustedData)
