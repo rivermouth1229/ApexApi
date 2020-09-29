@@ -17,9 +17,9 @@ app.use('/scripts', express.static(__dirname + '/node_modules/'))
 app.use(express.static('html'))
 
 // Get Apex Status Json Data
-app.get('/GetStatus/:id/:season', cors(), (req, res) => {
-  let psnId = req.params.id
-  let season = req.params.season
+app.get('/GetStatus', cors(), (req, res) => {
+  let psnId = req.query.id
+  let season = req.query.season
   console.log(`GetStatus called. ID: ${psnId}, Season: ${season}`)
 
   apex.getStatus(psnId)

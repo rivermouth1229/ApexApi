@@ -178,8 +178,9 @@ var app = new Vue({
     var self = this
 
     let psnId = GetParam('id')
+    let season = GetParam('season')
 
-    fetch(`https://rivermouth-apex-status.herokuapp.com/GetStatus?id=${psnId}`)
+    fetch(`https://rivermouth-apex-status.herokuapp.com/GetStatus?id=${psnId}&season=${season}`)
       .then(res => res.json())
       .then(ret => {
         if (typeof ret === null) {
