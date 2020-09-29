@@ -298,8 +298,9 @@ function ToggleLabel() {
 }
 
 function ChangeSeason(select) {
-  const value = select.value
-  location.href = `${window.location.href}&season=${value}`
+  let value = select.value
+  let baseUrl = window.location.href.split('$')[0]
+  location.href = `${baseUrl}&season=${value}`
 }
 
 </script>
