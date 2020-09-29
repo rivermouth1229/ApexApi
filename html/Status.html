@@ -204,6 +204,10 @@ var app = new Vue({
 
 // Vis.jsでグラフを描画する
 function ShowHistoryGraph(data, seasonData) {
+  // log
+  console.log(data)
+  console.log(seasonData)
+
   // セレクトの撰択を制御
   document.getElementById('seasonSelect').value = seasonData.target
 
@@ -213,8 +217,7 @@ function ShowHistoryGraph(data, seasonData) {
   // ランク帯別ラインの設定
   let start = MakeDateStr(String(seasonData.start - 1))
   let end   = MakeDateStr(String(seasonData.end + 2))
-  console.log(start)
-  console.log(end)
+
   let tiers = [
     { id: 7, rank: 1200 , name: 'silver' },   // darkblue: 7
     { id: 1, rank: 2800 , name: 'gold' },     // gold: 1
