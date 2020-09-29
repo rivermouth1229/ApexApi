@@ -212,6 +212,8 @@ function ShowHistoryGraph(data, seasonData) {
   // ランク帯別ラインの設定
   let start = MakeDateStr(String(seasonData.start - 1))
   let end   = MakeDateStr(String(seasonData.end + 2))
+  console.log(start)
+  console.log(end)
   let tiers = [
     { id: 7, rank: 1200 , name: 'silver' },   // darkblue: 7
     { id: 1, rank: 2800 , name: 'gold' },     // gold: 1
@@ -257,7 +259,7 @@ function ShowHistoryGraph(data, seasonData) {
     //legend: true,
     interpolation: false,
     min: MakeDateStr(String(seasonData.start)),
-    max: MakeDateStr(String(seasonData.start + 1)),
+    max: MakeDateStr(String(seasonData.end + 1)),
     dataAxis: { left: { range: { min: 0, max: 12000 } } },
   }
 
