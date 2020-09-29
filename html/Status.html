@@ -72,7 +72,6 @@
 
     .season-select {
       margin-left: 10px;
-      visibility: hidden;
     }
 
     .graph-area {
@@ -150,10 +149,10 @@
   <h1>Rank History</h1>
   <div class='flex-row'>
     <button id='toggleLable' onclick='ToggleLabel()'>Toggle Label</button>
-    <select class='season-select' onchange='ChangeSeason(this)'>
+    <select id='seasonSelect' class='season-select' onchange='ChangeSeason(this)'>
       <option Value='1'>Season5 - Split2</option>
       <option Value='2'>Season6 - Split1</option>
-      <option Value='3' selected>Season6 - Split2</option>
+      <option Value='3'>Season6 - Split2</option>
     </select>
   </div>
 
@@ -205,6 +204,9 @@ var app = new Vue({
 
 // Vis.jsでグラフを描画する
 function ShowHistoryGraph(data, seasonData) {
+  // セレクトの撰択を制御
+  document.getElementById('seasonSelect').value = seasonData.target
+
   // タグ
   let container = document.getElementById('graph')
 
@@ -297,9 +299,9 @@ function ToggleLabel() {
 
 function ChangeSeason(select) {
   const value = select.options[select.selectedIndex]
-  console.log(value)
+  let psnId = GetParam('id')
 
-  graph.destroy()
+  location.href = `https://rivermouth-apex-status.herokuapp.com/GetStatus?id=${psnId}&season=${value}`
 }
 
 </script>
