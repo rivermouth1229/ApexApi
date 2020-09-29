@@ -298,10 +298,8 @@ function ToggleLabel() {
 }
 
 function ChangeSeason(select) {
-  const value = select.options[select.selectedIndex]
-  let psnId = GetParam('id')
-
-  location.href = `https://rivermouth-apex-status.herokuapp.com/GetStatus?id=${psnId}&season=${value}`
+  const value = select.selectedIndex
+  location.href = `${window.location.href}&season=${value}`
 }
 
 </script>
