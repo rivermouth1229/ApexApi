@@ -113,7 +113,7 @@ function AddTodaysData(destination, mergeData) {
 function GetTargetSeasonData(season) {
   let ret = {}
   let targetSeason = (season != null) ? season : apex.currentSeason
-  let seasonData = apex.seasons.find(x => x.id === targetSeason)
+  let seasonData = apex.seasons.find(x => x.id == targetSeason)
   if (seasonData != null) {
     ret.target = targetSeason
     ret.start  = seasonData.seasonStart
