@@ -194,7 +194,7 @@ var app = new Vue({
         self.backgroundPath  = ret.backgroundPath
 
         if (typeof ret.historyData != 'undefined' && ret.historyData.length > 0) {
-          ShowHistoryGraph(ret.historyData)
+          ShowHistoryGraph(ret.historyData, ret.seasonData)
         }
       })
   },
@@ -202,13 +202,16 @@ var app = new Vue({
 
 
 // Vis.jsでグラフを描画する
-function ShowHistoryGraph(data) {
+function ShowHistoryGraph(data, seasonData) {
+  console.log(data)
+  console.log(seasonData)
+
   // タグ
   let container = document.getElementById('graph')
 
   // ランク帯別ラインの設定
-  let start = '2020-08-17'
-  let end = '2020-09-28'
+  let start = MakeDateStr(String(seasonData.start - 1))
+  let end   = MakeDateStr(String(seasonData.end + 2))
   let tiers = [
     { id: 7, rank: 1200 , name: 'silver' },   // darkblue: 7
     { id: 1, rank: 2800 , name: 'gold' },     // gold: 1
@@ -253,8 +256,8 @@ function ShowHistoryGraph(data) {
   let options = {
     //legend: true,
     interpolation: false,
-    min: '2020-08-18',
-    max: '2020-09-28',
+    min: MakeDateStr(String(seasonData.start)),
+    max: MakeDateStr(String(seasonData.start + 1))
     dataAxis: { left: { range: { min: 0, max: 12000 } } },
   }
 

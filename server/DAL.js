@@ -67,17 +67,14 @@ async function GetRankHistory(psnId, scoreFromApi, season) {
 
   // =================================
   // season
-  let start, end
-  let targetSeason = (season != null) ? season : apex.currentSeason
-  let seasonData = apex.seasons.find(x => x.id === targetSeason)
-  if (seasonData != null) {
-    start = seasonData.seasonStart
-    end   = seasonData.seasonEnd
-  }
+  let seasonData = GetTargetSeasonData(season)
 
   // =================================
   // データの取得
-  let result = await client.query('SELECT * FROM userdata WHERE userid=$1 AND date BETWEEN $2 AND $3', [userId, start, end])
+  let result = await client.query(
+    'SELECT * FROM userdata WHERE userid=$1 AND date BETWEEN $2 AND $3',
+    [userId, seasonData.start, seasonData.end]
+  )
 
   // =================================
   // 今日のデータはAPIから取得した値にする
@@ -113,14 +110,30 @@ function AddTodaysData(destination, mergeData) {
   }
 }
 
+function GetTargetSeasonData(season) {
+  let ret = {}
+  let targetSeason = (season != null) ? season : apex.currentSeason
+  let seasonData = apex.seasons.find(x => x.id === targetSeason)
+  if (seasonData != null) {
+    ret.start = seasonData.seasonStart
+    ret.end   = seasonData.seasonEnd
+  }
+
+  return ret
+}
+
 exports.saveUserStatus = (data) => {
   SaveUserStatus(data)
 }
 
-exports.getRankScoreHistory = (psnId, scoreFromApi) => {
-  return GetRankHistory(psnId, scoreFromApi)
+exports.getRankScoreHistory = (psnId, scoreFromApi, season) => {
+  return GetRankHistory(psnId, scoreFromApi, season)
 }
 
 exports.getAllUsers = () => {
   return GetAllUsers()
+}
+
+exports.getSeasonData = (season) => {
+  return GetTargetSeasonData(season)
 }
