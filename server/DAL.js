@@ -78,7 +78,7 @@ async function GetRankHistory(psnId, scoreFromApi, season) {
 
   // =================================
   // 今日のデータはAPIから取得した値にする
-  if (targetSeason === apex.currentSeason) {
+  if (seasonData.target === apex.currentSeason) {
     AddTodaysData(result.rows, scoreFromApi)
   }
 
@@ -115,8 +115,9 @@ function GetTargetSeasonData(season) {
   let targetSeason = (season != null) ? season : apex.currentSeason
   let seasonData = apex.seasons.find(x => x.id === targetSeason)
   if (seasonData != null) {
-    ret.start = seasonData.seasonStart
-    ret.end   = seasonData.seasonEnd
+    ret.target = targetSeason
+    ret.start  = seasonData.seasonStart
+    ret.end    = seasonData.seasonEnd
   }
 
   return ret
