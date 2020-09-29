@@ -1,5 +1,6 @@
 'use strict'
 
+var apex = require('./Apex.js')
 require('date-utils')
 
 require('dotenv').config();
@@ -53,7 +54,7 @@ function SaveUserStatus(data) {
 
 // ランクスコアの履歴データを取得する
 // HACK SQLを一つにしたい
-async function GetRankHistory(psnId, scoreFromApi) {
+async function GetRankHistory(psnId, scoreFromApi, season) {
   let client = await pool.connect()
 
   // =================================
@@ -65,12 +66,24 @@ async function GetRankHistory(psnId, scoreFromApi) {
   }
 
   // =================================
+  // season
+  let start, end
+  let targetSeason = (season != null) ? season : apex.currentSeason
+  let seasonData = apex.seasons.find(x => x.id === targetSeason)
+  if (seasonData != null) {
+    start = seasonData.seasonStart
+    end   = seasonData.seasonEnd
+  }
+
+  // =================================
   // データの取得
-  let result = await client.query('SELECT * FROM userdata WHERE userid=$1', [userId])
+  let result = await client.query('SELECT * FROM userdata WHERE userid=$1 AND date BETWEEN $2 AND $3', [userId, start, end])
 
   // =================================
   // 今日のデータはAPIから取得した値にする
-  AddTodaysData(result.rows, scoreFromApi)
+  if (targetSeason === apex.currentSeason) {
+    AddTodaysData(result.rows, scoreFromApi)
+  }
 
   return result.rows
 }

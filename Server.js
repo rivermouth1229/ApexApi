@@ -19,7 +19,8 @@ app.use(express.static('html'))
 // Get Apex Status Json Data
 app.get('/GetStatus', cors(), (req, res) => {
   let psnId = req.query['id']
-  console.log('GetStatus called. ID:' + psnId)
+  let season = req.query['season']
+  console.log(`GetStatus called. ID: ${psnId}, Season: ${season}`)
 
   apex.getStatus(psnId)
     .then(data => {
@@ -27,7 +28,7 @@ app.get('/GetStatus', cors(), (req, res) => {
       let adjustedData = apex.adjust(data)
 
       // ステータス履歴の取得
-      dal.getRankScoreHistory(psnId, adjustedData.rankValue)
+      dal.getRankScoreHistory(psnId, adjustedData.rankValue, season)
         .then(historyData => {
           // レスポンスするデータに履歴データを追加
           adjustedData.historyData = historyData
