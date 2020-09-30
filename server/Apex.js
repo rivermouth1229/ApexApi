@@ -53,7 +53,7 @@ exports.seasons = [
 ]
 
 // 現在のシーズン
-exports.currentSeason = 2
+exports.currentSeason = 3
 
 exports.getStatus = (user) => {
   return GetStatusFromApexApi(baseUrl, user)
