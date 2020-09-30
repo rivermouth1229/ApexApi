@@ -52,11 +52,20 @@ app.get('/GetStatus', cors(), (req, res) => {
 
 // Get Apex Rank Score History
 app.get('/GetHistory', cors(), (req, res) => {
-  let psnId = req.query['id']
-  console.log('GetHistory called. ID:' + psnId)
+  let psnId = req.query.id
+  let season = req.query.season
+  let rank = req.query.rank
+  console.log(`GetHistory called. ID: ${psnId}, Season: ${season}, Rank: ${rank}`)
 
-  dal.getRankScoreHistory(psnId)
-    .then(data => res.json(data))
+  dal.getRankScoreHistory(psnId, rank, season)
+    .then(data => {
+      let ret = {
+        historyData: data,
+        seasonData: dal.getSeasonData(season),
+      }
+
+      res.json(ret)
+    })
     .catch(e => {
       console.error(e)
       res.send({})
