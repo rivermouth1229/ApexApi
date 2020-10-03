@@ -49,7 +49,7 @@ function AdjustStatusData(apiData) {
 exports.seasons = [
   { id: 1, seasonStart: 20200801, seasonEnd: 20200816 },
   { id: 2, seasonStart: 20200817, seasonEnd: 20200929 },
-  { id: 3, seasonStart: 20200930, seasonEnd: 20201010 },
+  { id: 3, seasonStart: 20200930, seasonEnd: 20201110 },
 ]
 
 // 現在のシーズン
