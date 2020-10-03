@@ -128,8 +128,8 @@ function GetTargetSeasonData(season) {
   return ret
 }
 
-exports.saveUserStatus = (data) => {
-  SaveUserStatus(data)
+exports.saveUserStatus = (data, backDate) => {
+  SaveUserStatus(data, backDate)
 }
 
 exports.getRankScoreHistory = (psnId, scoreFromApi, season) => {
