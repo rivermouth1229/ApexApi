@@ -11,7 +11,11 @@ var pool = new Pool({
 
 // データベースにユーザ情報を保存する関数
 // 今はランクスコアのみ
-function SaveUserStatus(data) {
+function SaveUserStatus(data, backDate) {
+  let test = new Date().remove({ days: backDate }).toFormat("YYYYMMDD")
+  console.log(test)
+
+
   if (data === null) {
     return
   }
@@ -39,6 +43,7 @@ function SaveUserStatus(data) {
     // =================================
     // データの保存
     let today = new Date().toFormat("YYYYMMDD")
+    //today.remove({days: backDate})
 
     // 一度今日日付のデータを取得し、あれば上書き、なければ追加する
     let result = await client.query('SELECT * FROM userdata WHERE userid=$1 AND date=$2', [userId, today])

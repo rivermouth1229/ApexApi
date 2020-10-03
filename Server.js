@@ -74,7 +74,8 @@ app.get('/GetHistory', cors(), (req, res) => {
 
 // Save data of all users in db
 app.get('/SaveAllUserData', (req, res) => {
-  console.log('Call saveAllUserData')
+  let backDate = req.query.backDate != null ? Number(req.query.backDate) : 0
+  console.log(`Call saveAllUserData backDate: ${backDate}`)
   try {
     // 全ユーザを取得し、3秒インターバルでAPI取得とDBへの保存を行う
     dal.getAllUsers()
@@ -82,7 +83,7 @@ app.get('/SaveAllUserData', (req, res) => {
         users.forEach((user, index) => {
           setTimeout(() => {
             apex.getStatus(user.psnid)
-              .then(data => dal.saveUserStatus(apex.adjust(data)))
+              .then(data => dal.saveUserStatus(apex.adjust(data), backDate))
               .catch(e => console.error(e))
           }, 3000 * index)
         })
