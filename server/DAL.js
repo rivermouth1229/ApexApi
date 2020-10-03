@@ -12,10 +12,6 @@ var pool = new Pool({
 // データベースにユーザ情報を保存する関数
 // 今はランクスコアのみ
 function SaveUserStatus(data, backDate) {
-  let test = new Date().remove({ days: backDate }).toFormat("YYYYMMDD")
-  console.log(test)
-
-
   if (data === null) {
     return
   }
