@@ -38,8 +38,7 @@ function SaveUserStatus(data, backDate) {
 
     // =================================
     // データの保存
-    let today = new Date().toFormat("YYYYMMDD")
-    //today.remove({days: backDate})
+    let today = new Date().remove({ days: backDate }).toFormat("YYYYMMDD")
 
     // 一度今日日付のデータを取得し、あれば上書き、なければ追加する
     let result = await client.query('SELECT * FROM userdata WHERE userid=$1 AND date=$2', [userId, today])
@@ -48,7 +47,7 @@ function SaveUserStatus(data, backDate) {
       'INSERT INTO userdata VALUES ($1, $2, $3)'
 
     await client.query(upsertQuery, [userId, today, data.rankValue])
-    console.log('Upsert user data.')
+    console.log(`Upsert user data. date: ${today}`)
   })()
   .catch(e => console.log(e))
 }
