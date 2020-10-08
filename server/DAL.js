@@ -74,7 +74,7 @@ async function GetRankHistory(psnId, scoreFromApi, season) {
       users.psnid = $1
       AND userdata.date BETWEEN $2 AND $3
     `,
-    [userId, seasonData.start, seasonData.end]
+    [psnId, seasonData.start, seasonData.end]
   )
 
   // =================================
