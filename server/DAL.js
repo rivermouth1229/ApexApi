@@ -55,24 +55,25 @@ function SaveUserStatus(data, backDate) {
 // ランクスコアの履歴データを取得する
 // HACK SQLを一つにしたい
 async function GetRankHistory(psnId, scoreFromApi, season) {
-  let client = await pool.connect()
 
-  // =================================
-  // ユーザIDの取得
-  let userId = -1
-  let user = await client.query('SELECT id FROM users WHERE psnid=$1', [psnId])
-  if (user.rows.length === 1) {
-    userId = user.rows[0].id
-  }
-
-  // =================================
   // season
   let seasonData = GetTargetSeasonData(season)
 
-  // =================================
-  // データの取得
+  // get data from database
+  let client = await pool.connect()
   let result = await client.query(
-    'SELECT * FROM userdata WHERE userid=$1 AND date BETWEEN $2 AND $3',
+    `
+    SELECT
+      date, rankscore
+    FROM
+      userdata
+      INNER JOIN
+      users
+        ON  userdata.userid = users.id
+    WHERE
+      users.psnid = $1
+      AND userdata.date BETWEEN $2 AND $3
+    `,
     [userId, seasonData.start, seasonData.end]
   )
 
