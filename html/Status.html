@@ -245,7 +245,7 @@ function ShowHistoryGraph(data, seasonData) {
   // ランクデータの作成
   data.forEach(row => {
     items.add({
-      x: MakeDateStr(row.date),
+      x: MakeDateStr(String(row.date)),
       y: row.rankscore,
       group: 3,
       label: {
