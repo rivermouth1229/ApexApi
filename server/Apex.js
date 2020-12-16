@@ -50,11 +50,12 @@ exports.seasons = [
   { id: 1, seasonStart: 20200801, seasonEnd: 20200816 },
   { id: 2, seasonStart: 20200817, seasonEnd: 20200929 },
   { id: 3, seasonStart: 20200930, seasonEnd: 20201104 },
-  { id: 4, seasonStart: 20201105, seasonEnd: 20201205 },
+  { id: 4, seasonStart: 20201105, seasonEnd: 20201215 },
+  { id: 5, seasonStart: 20201216, seasonEnd: 20210202 },
 ]
 
 // 現在のシーズン
-exports.currentSeason = 4
+exports.currentSeason = 5
 
 exports.getStatus = (user) => {
   return GetStatusFromApexApi(baseUrl, user)
