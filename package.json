@@ -12,10 +12,13 @@
     "pg": "^8.3.0",
     "vis-timeline": "^7.3.7"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "format": "prettier -w '*.js' '**/*.js' 'html/*.html'"
   },
   "author": "",
   "license": "MIT"
