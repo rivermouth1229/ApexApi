@@ -1,278 +1,305 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-<title>Apex Status</title>
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script src="/scripts/vis-timeline/standalone/umd/vis-timeline-graph2d.min.js"></script>
-<link href="/scripts/vis-timeline/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
-</head>
-<body>
-  <h1><a href='https://rivermouth-apex-status.herokuapp.com/'>Apex Status</a></h1>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,minimum-scale=1.0"
+    />
+    <title>Apex Status</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="/scripts/vis-timeline/standalone/umd/vis-timeline-graph2d.min.js"></script>
+    <link
+      href="/scripts/vis-timeline/styles/vis-timeline-graph2d.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body>
+    <h1>
+      <a href="https://rivermouth-apex-status.herokuapp.com/">Apex Status</a>
+    </h1>
 
-  <div id='status' class='container'>
-    <img class='bg-image' v-bind:src='backgroundPath'></img>
-    <div class='flex-column status-content'>
-      <div class='flex-row before'>
-        <img class='rank-icon' v-bind:src='rankIconPath'></img>
-        <div class='flex-column'>
-          <h2>{{ psnId }}</h2>
-          <span>Rank Score: {{ rankValue }}</span>
+    <div id="status" class="container">
+      <img class="bg-image" v-bind:src="backgroundPath" />
+      <div class="flex-column status-content">
+        <div class="flex-row before">
+          <img class="rank-icon" v-bind:src="rankIconPath" />
+          <div class="flex-column">
+            <h2>{{ psnId }}</h2>
+            <span>Rank Score: {{ rankValue }}</span>
+          </div>
         </div>
+        <img class="legend-image before" v-bind:src="legendImagePath" />
       </div>
-      <img class='legend-image before' v-bind:src='legendImagePath'></img>
     </div>
-  </div>
 
-  <br/>
-  <h1>Rank History</h1>
-  <button id='toggleLable' onclick='toggleLabel()'>Toggle Label</button>
-  <div id='graph' class='graph-area'></div>
+    <br />
+    <h1>Rank History</h1>
+    <button id="toggleLable" onclick="toggleLabel()">Toggle Label</button>
+    <div id="graph" class="graph-area"></div>
 
-
-<script>
-var app = new Vue({
-  //select html element
-  el: '#status',
-  //init data
-  data: {
-      psnId: '',
-      rankValue: 0,
-      rankIconPath: '',
-      legendImagePath: '',
-      backgroundPath: '',
-  },
-  //called when loaded
-  created: function(){
-    var self = this
-
-    let psnId = getParam('id')
-
-    fetch(`https://rivermouth-apex-status.herokuapp.com/GetStatus?id=${psnId}`).then(res => res.json())
-      .then(ret => {
-        if (typeof data === null) {
-          self.psnId = 'Player Not Found'
-          return
-        }
-
-        self.psnId           = ret.psnId
-        self.rankValue       = ret.rankValue
-        self.rankIconPath    = ret.rankIconPath
-        self.legendImagePath = ret.legendImagePath
-        self.backgroundPath  = ret.backgroundPath
-      })
-  },
-})
-
-// グラフ描画　Vis.jsを使用
-fetch(`https://rivermouth-apex-status.herokuapp.com/GetHistory?id=${getParam('id')}`)
-  .then(res => res.json())
-  .then(data => {
-    // タグ
-    let container = document.getElementById('graph')
-
-    // ランク帯別ラインの設定
-    let start = '2020-08-17'
-    let end = '2020-09-28'
-    let tiers = [
-      { id: 7, rank: 1200 , name: 'silver' },   // darkblue: 7
-      { id: 1, rank: 2800 , name: 'gold' },     // gold: 1
-      { id: 5, rank: 4800 , name: 'platinum' }, // skyblue: 5
-      { id: 0, rank: 7200 , name: 'diamond' },  // blue: 0
-      { id: 2, rank: 10000, name: 'master' },   // purple: 2
-      { id: 4, rank: 12000, name: 'predator' }, // red: 4
-    ]
-
-    let items  = new vis.DataSet()
-    let groups = new vis.DataSet()
-    tiers.forEach(tier => {
-      // データに境界線となるデータを追加
-      items.add({ x: start, y: tier.rank, group: tier.id })
-      items.add({ x: end  , y: tier.rank, group: tier.id })
-
-      // スタイル用にグループを作成
-      groups.add({
-        id: tier.id,
-        content: tier.name,
-        //className: tier.name,
-        options: {
-          shaded: { orientation: 'bottom' },
+    <script>
+      var app = new Vue({
+        //select html element
+        el: "#status",
+        //init data
+        data: {
+          psnId: "",
+          rankValue: 0,
+          rankIconPath: "",
+          legendImagePath: "",
+          backgroundPath: "",
         },
-      })
-    })
+        //called when loaded
+        created: function () {
+          var self = this;
 
-    // ランクデータの作成
-    data.forEach(row => {
-      items.add({
-        x: makeDateStr(row.date),
-        y: row.rankscore,
-        group: 3,
-        label: {
-          content: row.rankscore,
-          className: 'my-data',
+          let psnId = getParam("id");
+
+          fetch(
+            `https://rivermouth-apex-status.herokuapp.com/GetStatus?id=${psnId}`
+          )
+            .then((res) => res.json())
+            .then((ret) => {
+              if (typeof data === null) {
+                self.psnId = "Player Not Found";
+                return;
+              }
+
+              self.psnId = ret.psnId;
+              self.rankValue = ret.rankValue;
+              self.rankIconPath = ret.rankIconPath;
+              self.legendImagePath = ret.legendImagePath;
+              self.backgroundPath = ret.backgroundPath;
+            });
+        },
+      });
+
+      // グラフ描画　Vis.jsを使用
+      fetch(
+        `https://rivermouth-apex-status.herokuapp.com/GetHistory?id=${getParam(
+          "id"
+        )}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          // タグ
+          let container = document.getElementById("graph");
+
+          // ランク帯別ラインの設定
+          let start = "2020-08-17";
+          let end = "2020-09-28";
+          let tiers = [
+            { id: 7, rank: 1200, name: "silver" }, // darkblue: 7
+            { id: 1, rank: 2800, name: "gold" }, // gold: 1
+            { id: 5, rank: 4800, name: "platinum" }, // skyblue: 5
+            { id: 0, rank: 7200, name: "diamond" }, // blue: 0
+            { id: 2, rank: 10000, name: "master" }, // purple: 2
+            { id: 4, rank: 12000, name: "predator" }, // red: 4
+          ];
+
+          let items = new vis.DataSet();
+          let groups = new vis.DataSet();
+          tiers.forEach((tier) => {
+            // データに境界線となるデータを追加
+            items.add({ x: start, y: tier.rank, group: tier.id });
+            items.add({ x: end, y: tier.rank, group: tier.id });
+
+            // スタイル用にグループを作成
+            groups.add({
+              id: tier.id,
+              content: tier.name,
+              //className: tier.name,
+              options: {
+                shaded: { orientation: "bottom" },
+              },
+            });
+          });
+
+          // ランクデータの作成
+          data.forEach((row) => {
+            items.add({
+              x: makeDateStr(row.date),
+              y: row.rankscore,
+              group: 3,
+              label: {
+                content: row.rankscore,
+                className: "my-data",
+              },
+            });
+          });
+
+          // 表示設定
+          let options = {
+            //legend: true,
+            interpolation: false,
+            min: "2020-08-18",
+            max: "2020-09-28",
+            dataAxis: { left: { range: { min: 0, max: 12000 } } },
+          };
+
+          var graph = new vis.Graph2d(container, items, groups, options);
+        });
+
+      function getParam(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return "";
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+      }
+
+      function makeDateStr(str) {
+        let tmp = str.slice(0, 4) + "-" + str.slice(4);
+        return tmp.slice(0, 7) + "-" + tmp.slice(7);
+      }
+
+      function toggleLabel() {
+        let labels = document.getElementsByClassName("vis-label");
+        for (let i = 0; i < labels.length; i++) {
+          let label = labels[i];
+          if (label.style.display === "block") {
+            label.style.display = "none";
+          } else {
+            label.style.display = "block";
+          }
         }
-      })
-    })
+      }
+    </script>
 
-    // 表示設定
-    let options = {
-      //legend: true,
-      interpolation: false,
-      min: '2020-08-18',
-      max: '2020-09-28',
-      dataAxis: { left: { range: { min: 0, max: 12000 } } },
-    }
+    <style>
+      body {
+        width: 100%;
+        background-color: #232323;
+        color: white;
+      }
 
-    var graph = new vis.Graph2d(container, items, groups, options)
-  })
+      h1 a {
+        text-decoration: none;
+        color: white;
+      }
 
+      .container {
+        width: 100%;
+        position: relative;
+      }
 
+      .bg-image {
+        opacity: 0.3;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        z-index: 1;
+        width: 100%;
+      }
 
-function getParam(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
+      .status-content {
+        width: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        left: 0;
+        right: 0;
+        margin: auto;
+      }
 
-function makeDateStr(str) {
-  let tmp = str.slice(0, 4) + '-' + str.slice(4)
-  return tmp.slice(0, 7) + '-' + tmp.slice(7)
-}
+      .flex-row {
+        display: flex;
+      }
 
-function toggleLabel() {
-  let labels = document.getElementsByClassName('vis-label')
-  for (let i = 0; i < labels.length; i++) {
-    let label = labels[i]
-    if (label.style.display === 'block') {
-      label.style.display = 'none'
-    }
-    else {
-      label.style.display = 'block'
-    }
-  }
-}
+      .flex-column {
+        display: flex;
+        flex-direction: column;
+      }
 
-</script>
+      .before {
+        position: relative;
+        z-index: 2;
+      }
 
-<style>
-body {
-  width: 100%;
-  background-color: #232323;
-  color: white;
-}
+      .rank-icon {
+        height: 100px;
+      }
 
-h1 a {
-  text-decoration:none;
-  color: white;
-}
+      .legend-image {
+        width: 300px;
+      }
 
-.container {
-  width: 100%;
-  position: relative;
-}
+      .graph-area {
+        width: 80%;
+        left: 0;
+        right: 0;
+        margin: auto;
+        margin-top: 20px;
+      }
 
-.bg-image {
-  opacity: 0.3;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  margin: auto;
-  z-index: 1;
-  width: 100%;
-}
+      .my-data {
+        fill: white;
+      }
 
-.status-content {
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  left: 0;
-  right: 0;
-  margin: auto;
-}
+      .bronze {
+        fill: #6a3805;
+        stroke: #6a3805;
+      }
+      .silver {
+        fill: #c9caca;
+        stroke: #c9caca;
+      }
+      .gold {
+        fill: #b9b037;
+        stroke: #b9b037;
+      }
+      .platinum {
+        fill: skyblue;
+        stroke: skyblue;
+      }
+      .diamond {
+        fill: blue;
+        stroke: blue;
+      }
+      .master {
+        fill: purple;
+        stroke: purple;
+      }
 
-.flex-row {
-  display: flex;
-}
+      .path.bronze.fill,
+      .path.silver.fill,
+      .path.gold.fill,
+      .path.platinum.fill,
+      .path.diamond.fill,
+      .path.master.fill {
+        stroke: none;
+      }
 
-.flex-column {
-  display: flex;
-  flex-direction: column;
-}
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 10vw;
+          margin-left: 0.5vw;
+        }
+        h2 {
+          font-size: 6vw;
+        }
+        body {
+          font-size: 4vw;
+        }
+        .status-content,
+        .legend-image {
+          width: 80vw;
+        }
+        .rank-icon {
+          height: 12vh;
+        }
 
-.before {
-  position: relative;
-  z-index: 2;
-}
-
-.rank-icon {
-  height: 100px;
-}
-
-.legend-image {
-  width: 300px;
-}
-
-.graph-area {
-  width: 80%;
-  left: 0;
-  right: 0;
-  margin: auto;
-  margin-top: 20px;
-}
-
-.my-data {
-  fill: white;
-}
-
-.bronze { fill: #6A3805; stroke: #6A3805; }
-.silver { fill: #C9CACA; stroke: #C9CACA; }
-.gold { fill: #B9B037; stroke: #B9B037; }
-.platinum { fill: skyblue; stroke: skyblue; }
-.diamond { fill: blue; stroke: blue; }
-.master { fill: purple; stroke: purple; }
-
-.path.bronze.fill,
-.path.silver.fill,
-.path.gold.fill,
-.path.platinum.fill,
-.path.diamond.fill,
-.path.master.fill {
-  stroke: none;
-}
-
-@media (max-width: 480px) {
-   h1 {
-     font-size: 10vw;
-     margin-left: 0.5vw;
-   }
-   h2 {
-     font-size: 6vw;
-   }
-   body {
-     font-size: 4vw;
-   }
-   .status-content,
-   .legend-image {
-     width: 80vw;
-   }
-   .rank-icon {
-     height: 12vh;
-   }
-
-   .graph-area {
-     width: 100%;
-   }
- }
-
-</style>
-
-</body>
+        .graph-area {
+          width: 100%;
+        }
+      }
+    </style>
+  </body>
 </html>
