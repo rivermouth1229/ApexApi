@@ -1,0 +1,11 @@
+#!/bin/bash
+
+heroku pg:psql -a rivermouth-apex-status
+
+create table Users (id serial, psnId varchar(16), PRIMARY KEY (psnId));
+create table UserData (userId integer, date varchar(10), rankScore integer);
+
+\
+
+CREATE INDEX userdata userid
+CREATE INDEX userdata date

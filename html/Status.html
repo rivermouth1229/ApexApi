@@ -1,320 +1,348 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-  <title>Apex Status</title>
-  <link href="/scripts/vis-timeline/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
-  <style>
-    body {
-      width: 100%;
-      background-color: #232323;
-      color: white;
-    }
-
-    h1 a {
-      text-decoration:none;
-      color: white;
-    }
-
-    [v-cloak] {
-      display: none;
-    }
-
-    .container {
-      width: 100%;
-      position: relative;
-    }
-
-    .bg-image {
-      opacity: 0.3;
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      margin: auto;
-      z-index: 1;
-      width: 100%;
-    }
-
-    .status-content {
-      width: 300px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      left: 0;
-      right: 0;
-      margin: auto;
-    }
-
-    .flex-row {
-      display: flex;
-    }
-
-    .flex-column {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .before {
-      position: relative;
-      z-index: 2;
-    }
-
-    .rank-icon {
-      height: 100px;
-    }
-
-    .legend-image {
-      width: 300px;
-    }
-
-    .season-select {
-      margin-left: 10px;
-    }
-
-    .graph-area {
-      width: 80%;
-      left: 0;
-      right: 0;
-      margin: auto;
-      margin-top: 20px;
-    }
-
-    .my-data {
-      fill: white;
-    }
-
-    .bronze { fill: #6A3805; stroke: #6A3805; }
-    .silver { fill: #C9CACA; stroke: #C9CACA; }
-    .gold { fill: #B9B037; stroke: #B9B037; }
-    .platinum { fill: skyblue; stroke: skyblue; }
-    .diamond { fill: blue; stroke: blue; }
-    .master { fill: purple; stroke: purple; }
-
-    .path.bronze.fill,
-    .path.silver.fill,
-    .path.gold.fill,
-    .path.platinum.fill,
-    .path.diamond.fill,
-    .path.master.fill {
-      stroke: none;
-    }
-
-    @media (max-width: 480px) {
-      h1 {
-       font-size: 10vw;
-       margin-left: 0.5vw;
-      }
-      h2 {
-       font-size: 6vw;
-      }
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,minimum-scale=1.0"
+    />
+    <title>Apex Status</title>
+    <link
+      href="/scripts/vis-timeline/styles/vis-timeline-graph2d.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <style>
       body {
-       font-size: 4vw;
+        width: 100%;
+        background-color: #232323;
+        color: white;
       }
-      .status-content,
-      .legend-image {
-       width: 80vw;
+
+      h1 a {
+        text-decoration: none;
+        color: white;
       }
+
+      [v-cloak] {
+        display: none;
+      }
+
+      .container {
+        width: 100%;
+        position: relative;
+      }
+
+      .bg-image {
+        opacity: 0.3;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        z-index: 1;
+        width: 100%;
+      }
+
+      .status-content {
+        width: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        left: 0;
+        right: 0;
+        margin: auto;
+      }
+
+      .flex-row {
+        display: flex;
+      }
+
+      .flex-column {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .before {
+        position: relative;
+        z-index: 2;
+      }
+
       .rank-icon {
-       height: 12vh;
+        height: 100px;
+      }
+
+      .legend-image {
+        width: 300px;
+      }
+
+      .season-select {
+        margin-left: 10px;
       }
 
       .graph-area {
-       width: 100%;
+        width: 80%;
+        left: 0;
+        right: 0;
+        margin: auto;
+        margin-top: 20px;
       }
-    }
 
-  </style>
-</head>
-<body>
-  <h1><a href='https://rivermouth-apex-status.herokuapp.com/'>Apex Status</a></h1>
+      .my-data {
+        fill: white;
+      }
 
-  <div id='status' class='container' v-cloak>
-    <img class='bg-image' v-bind:src='backgroundPath'></img>
-    <div class='flex-column status-content'>
-      <div class='flex-row before'>
-        <img class='rank-icon' v-bind:src='rankIconPath'></img>
-        <div class='flex-column'>
-          <h2>{{ psnId }}</h2>
-          <span>Rank Score: {{ rankValue }}</span>
+      .bronze {
+        fill: #6a3805;
+        stroke: #6a3805;
+      }
+      .silver {
+        fill: #c9caca;
+        stroke: #c9caca;
+      }
+      .gold {
+        fill: #b9b037;
+        stroke: #b9b037;
+      }
+      .platinum {
+        fill: skyblue;
+        stroke: skyblue;
+      }
+      .diamond {
+        fill: blue;
+        stroke: blue;
+      }
+      .master {
+        fill: purple;
+        stroke: purple;
+      }
+
+      .path.bronze.fill,
+      .path.silver.fill,
+      .path.gold.fill,
+      .path.platinum.fill,
+      .path.diamond.fill,
+      .path.master.fill {
+        stroke: none;
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 10vw;
+          margin-left: 0.5vw;
+        }
+        h2 {
+          font-size: 6vw;
+        }
+        body {
+          font-size: 4vw;
+        }
+        .status-content,
+        .legend-image {
+          width: 80vw;
+        }
+        .rank-icon {
+          height: 12vh;
+        }
+
+        .graph-area {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      <a href="https://rivermouth-apex-status.herokuapp.com/">Apex Status</a>
+    </h1>
+
+    <div id="status" class="container" v-cloak>
+      <img class="bg-image" v-bind:src="backgroundPath" />
+      <div class="flex-column status-content">
+        <div class="flex-row before">
+          <img class="rank-icon" v-bind:src="rankIconPath" />
+          <div class="flex-column">
+            <h2>{{ psnId }}</h2>
+            <span>Rank Score: {{ rankValue }}</span>
+          </div>
         </div>
+        <img class="legend-image before" v-bind:src="legendImagePath" />
       </div>
-      <img class='legend-image before' v-bind:src='legendImagePath'></img>
     </div>
-  </div>
 
-  <br/>
-  <h1>Rank History</h1>
-  <div class='flex-row'>
-    <button id='toggleLable' onclick='ToggleLabel()'>Toggle Label</button>
-    <select id='seasonSelect' class='season-select' onchange='ChangeSeason(this)'>
-      <option Value='1'>Season5 - Split2</option>
-      <option Value='2'>Season6 - Split1</option>
-      <option Value='3'>Season6 - Split2</option>
-      <option Value='4'>Season7 - Split1</option>
-      <option Value='5'>Season7 - Split2</option>
-    </select>
-  </div>
+    <br />
+    <h1>Rank History</h1>
+    <div class="flex-row">
+      <button id="toggleLable" onclick="ToggleLabel()">Toggle Label</button>
+      <select
+        id="seasonSelect"
+        class="season-select"
+        onchange="ChangeSeason(this)"
+      >
+        <option value="1">Season5 - Split2</option>
+        <option value="2">Season6 - Split1</option>
+        <option value="3">Season6 - Split2</option>
+        <option Value='4'>Season7 - Split1</option>
+        <option Value='5'>Season7 - Split2</option>
+      </select>
+    </div>
 
-  <div id='graph' class='graph-area'></div>
+    <div id="graph" class="graph-area"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<script src="/scripts/vis-timeline/standalone/umd/vis-timeline-graph2d.min.js"></script>
-<script>
-var app = new Vue({
-  //select html element
-  el: '#status',
-  //init data
-  data: {
-      psnId: '',
-      rankValue: 0,
-      rankIconPath: '',
-      legendImagePath: '',
-      backgroundPath: '',
-  },
-  //called when loaded
-  created: function(){
-    var self = this
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="/scripts/vis-timeline/standalone/umd/vis-timeline-graph2d.min.js"></script>
+    <script>
+      var app = new Vue({
+        //select html element
+        el: "#status",
+        //init data
+        data: {
+          psnId: "",
+          rankValue: 0,
+          rankIconPath: "",
+          legendImagePath: "",
+          backgroundPath: "",
+        },
+        //called when loaded
+        created: function () {
+          var self = this;
 
-    let psnId = GetParam('id')
-    let season = GetParam('season')
-    let additionalQuery = (season != null) ?  `&season=${season}` : ``
+          let psnId = GetParam("id");
+          let season = GetParam("season");
+          let additionalQuery = season != null ? `&season=${season}` : ``;
 
-    fetch(`https://rivermouth-apex-status.herokuapp.com/GetStatus?id=${psnId}${additionalQuery}`)
-      .then(res => res.json())
-      .then(ret => {
-        if (typeof ret === null) {
-          self.psnId = 'Player Not Found'
-          return
-        }
+          fetch(
+            `https://rivermouth-apex-status.herokuapp.com/GetStatus?id=${psnId}${additionalQuery}`
+          )
+            .then((res) => res.json())
+            .then((ret) => {
+              if (typeof ret === null) {
+                self.psnId = "Player Not Found";
+                return;
+              }
 
-        self.psnId           = ret.psnId
-        self.rankValue       = ret.rankValue
-        self.rankIconPath    = ret.rankIconPath
-        self.legendImagePath = ret.legendImagePath
-        self.backgroundPath  = ret.backgroundPath
+              self.psnId = ret.psnId;
+              self.rankValue = ret.rankValue;
+              self.rankIconPath = ret.rankIconPath;
+              self.legendImagePath = ret.legendImagePath;
+              self.backgroundPath = ret.backgroundPath;
 
-        if (typeof ret.historyData != 'undefined') {
-          ShowHistoryGraph(ret.historyData, ret.seasonData)
-        }
-      })
-  },
-})
+              if (typeof ret.historyData != "undefined") {
+                ShowHistoryGraph(ret.historyData, ret.seasonData);
+              }
+            });
+        },
+      });
 
+      // Vis.jsでグラフを描画する
+      function ShowHistoryGraph(data, seasonData) {
+        // セレクトの撰択を制御
+        document.getElementById("seasonSelect").value = seasonData.target;
 
-// Vis.jsでグラフを描画する
-function ShowHistoryGraph(data, seasonData) {
-  // セレクトの撰択を制御
-  document.getElementById('seasonSelect').value = seasonData.target
+        // タグ
+        let container = document.getElementById("graph");
 
-  // タグ
-  let container = document.getElementById('graph')
+        // ランク帯別ラインの設定
+        let start = MakeDateStr(String(seasonData.start - 1));
+        let end = MakeDateStr(String(seasonData.end + 2));
 
-  // ランク帯別ラインの設定
-  let start = MakeDateStr(String(seasonData.start - 1))
-  let end   = MakeDateStr(String(seasonData.end + 2))
+        let tiers = [
+          { id: 7, rank: 1200, name: "silver" }, // darkblue: 7
+          { id: 1, rank: 2800, name: "gold" }, // gold: 1
+          { id: 5, rank: 4800, name: "platinum" }, // skyblue: 5
+          { id: 0, rank: 7200, name: "diamond" }, // blue: 0
+          { id: 2, rank: 10000, name: "master" }, // purple: 2
+          { id: 4, rank: 12000, name: "predator" }, // red: 4
+        ];
 
-  let tiers = [
-    { id: 7, rank: 1200 , name: 'silver' },   // darkblue: 7
-    { id: 1, rank: 2800 , name: 'gold' },     // gold: 1
-    { id: 5, rank: 4800 , name: 'platinum' }, // skyblue: 5
-    { id: 0, rank: 7200 , name: 'diamond' },  // blue: 0
-    { id: 2, rank: 10000, name: 'master' },   // purple: 2
-    { id: 4, rank: 12000, name: 'predator' }, // red: 4
-  ]
+        let items = new vis.DataSet();
+        let groups = new vis.DataSet();
+        tiers.forEach((tier) => {
+          // データに境界線となるデータを追加
+          items.add({ x: start, y: tier.rank, group: tier.id });
+          items.add({ x: end, y: tier.rank, group: tier.id });
 
-  let items  = new vis.DataSet()
-  let groups = new vis.DataSet()
-  tiers.forEach(tier => {
-    // データに境界線となるデータを追加
-    items.add({ x: start, y: tier.rank, group: tier.id })
-    items.add({ x: end  , y: tier.rank, group: tier.id })
+          // スタイル用にグループを作成
+          groups.add({
+            id: tier.id,
+            content: tier.name,
+            //className: tier.name,
+            options: {
+              shaded: { orientation: "bottom" },
+            },
+          });
+        });
 
-    // スタイル用にグループを作成
-    groups.add({
-      id: tier.id,
-      content: tier.name,
-      //className: tier.name,
-      options: {
-        shaded: { orientation: 'bottom' },
-      },
-    })
-  })
+        // ランクデータの作成
+        data.forEach((row) => {
+          items.add({
+            x: MakeDateStr(row.date),
+            y: row.rankscore,
+            group: 3,
+            label: {
+              content: row.rankscore,
+              className: "my-data",
+            },
+          });
+        });
 
-  // ランクデータの作成
-  data.forEach(row => {
-    items.add({
-      x: MakeDateStr(String(row.date)),
-      y: row.rankscore,
-      group: 3,
-      label: {
-        content: row.rankscore,
-        className: 'my-data',
+        // 表示設定
+        let options = {
+          //legend: true,
+          interpolation: false,
+          min: MakeDateStr(String(seasonData.start)),
+          max: MakeDateStr(String(seasonData.end + 1)),
+          dataAxis: { left: { range: { min: 0, max: 12000 } } },
+        };
+
+        var graph = new vis.Graph2d(container, items, groups, options);
       }
-    })
-  })
 
-  // 表示設定
-  let options = {
-    //legend: true,
-    interpolation: false,
-    min: MakeDateStr(String(seasonData.start)),
-    max: MakeDateStr(String(seasonData.end + 1)),
-    dataAxis: { left: { range: { min: 0, max: 12000 } } },
-  }
+      function GetParam(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return "";
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+      }
 
-  var graph = new vis.Graph2d(container, items, groups, options)
-}
+      function MakeDateStr(str) {
+        let tmp = str.slice(0, 4) + "-" + str.slice(4);
+        return tmp.slice(0, 7) + "-" + tmp.slice(7);
+      }
 
+      function ToggleLabel() {
+        let labels = document.getElementsByClassName("vis-label");
+        for (let i = 0; i < labels.length; i++) {
+          let label = labels[i];
+          if (label.style.display === "block") {
+            label.style.display = "none";
+          } else {
+            label.style.display = "block";
+          }
+        }
+      }
 
+      function ChangeSeason(select) {
+        let season = select.value;
 
-function GetParam(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
+        fetch(
+          `https://rivermouth-apex-status.herokuapp.com/GetHistory?id=${app.psnId}&season=${season}&rank=${app.rankValue}`
+        )
+          .then((res) => res.json())
+          .then((ret) => {
+            // サーバエラーの処理を追加しなければ
 
-function MakeDateStr(str) {
-  let tmp = str.slice(0, 4) + '-' + str.slice(4)
-  return tmp.slice(0, 7) + '-' + tmp.slice(7)
-}
+            // グラフを消去
+            graph.textContent = null;
 
-function ToggleLabel() {
-  let labels = document.getElementsByClassName('vis-label')
-  for (let i = 0; i < labels.length; i++) {
-    let label = labels[i]
-    if (label.style.display === 'block') {
-      label.style.display = 'none'
-    }
-    else {
-      label.style.display = 'block'
-    }
-  }
-}
-
-function ChangeSeason(select) {
-  let season = select.value
-
-  fetch(`https://rivermouth-apex-status.herokuapp.com/GetHistory?id=${app.psnId}&season=${season}&rank=${app.rankValue}`)
-    .then(res => res.json())
-    .then(ret => {
-      // サーバエラーの処理を追加しなければ
-
-      // グラフを消去
-      graph.textContent = null
-
-      // グラフを再描画する
-      ShowHistoryGraph(ret.historyData, ret.seasonData)
-    })
-}
-
-</script>
-
-</body>
+            // グラフを再描画する
+            ShowHistoryGraph(ret.historyData, ret.seasonData);
+          });
+      }
+    </script>
+  </body>
 </html>
