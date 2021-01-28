@@ -102,7 +102,7 @@ function AddTodaysData(destination, mergeData) {
   let todaysData = destination.filter((e) => e.date === today);
   switch (todaysData.length) {
     case 0:
-      destination.push({ date: today, rankscore: mergeData });
+      destination.push({ date: Number(today), rankscore: mergeData });
       break;
     case 1:
       todaysData[0].rankscore = mergeData;
