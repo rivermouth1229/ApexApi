@@ -52,7 +52,7 @@ exports.seasons = [
   { id: 3, seasonStart: 20200930, seasonEnd: 20201104 },
   { id: 4, seasonStart: 20201105, seasonEnd: 20201215 },
   { id: 5, seasonStart: 20201216, seasonEnd: 20210202 },
-  { id: 6, seasonStart: 20200203, seasonEnd: 20210317 },
+  { id: 6, seasonStart: 20210203, seasonEnd: 20210317 },
 ];
 
 // 現在のシーズン
