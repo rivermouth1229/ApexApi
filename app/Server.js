@@ -13,7 +13,7 @@ var dal = require("./server/DAL.js");
 app.use("/scripts", express.static(__dirname + "/node_modules/"));
 
 // Get View
-app.use(express.static("html"));
+app.use(express.static("app/html"));
 
 // Get Apex Status Json Data
 app.get("/GetStatus", cors(), (req, res) => {
