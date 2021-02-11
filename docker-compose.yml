@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: "postgres"
+    ports:
+      - "5432:5432"
+    volumes:
+      - "postgres_data:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_USER: "apex"
+      POSTGRES_PASSWORD: "apex"
+
+  express:
+    container_name: "express"
+    build:
+      context: .
+      dockerfile: "./app/Dockerfile"
+    volumes:
+      - "./app:/usr/var/app"
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgres://apex:apex@postgres:5432/apex"
+
+volumes:
+  postgres_data:
+    driver: "local"
