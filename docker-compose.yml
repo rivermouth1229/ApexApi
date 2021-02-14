@@ -21,6 +21,7 @@ services:
       - "./app:/usr/var/app"
     ports:
       - "3000:3000"
+      - "5555:5555"
     environment:
       DATABASE_URL: "postgres://apex:apex@postgres:5432/apex"
 
