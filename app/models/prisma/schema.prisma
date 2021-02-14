@@ -1,0 +1,48 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  @@map(name: "users")
+  id Int @id @default(autoincrement())
+  psnId String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 後でこちらに変更したい
+// model User {
+//   @@map(name: "users")
+//   id Int @id @default(autoincrement())
+//   psnId String @unique @map(name: "psn_id")
+//   scoreLogs ScoreLog[]
+//   createdAt DateTime @default(now()) @map(name: "created_at")
+//   updatedAt DateTime @updatedAt @map(name: "updated_at")
+// }
+
+// 後でScoreLogに置き換えたい
+model userData {
+  @@map(name: "userdata")
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  rankScore Int
+  date String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ScoreLog {
+  @@map(name: "score_logs")
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id])
+  userId Int @map(name: "user_id")
+  rankScore Int @map(name: "rank_score")
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+}
