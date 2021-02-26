@@ -2,6 +2,7 @@ FROM node:14
 
 WORKDIR /usr/var/
 COPY package.json .
+COPY .env .
 COPY app/ app/
 RUN npm install
 RUN npx prisma generate
