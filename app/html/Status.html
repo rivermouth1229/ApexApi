@@ -154,7 +154,7 @@
   </head>
   <body>
     <h1>
-      <a href="https://rivermouth-apex-status.herokuapp.com/">Apex Status</a>
+      <a href="/">Apex Status</a>
     </h1>
 
     <div id="status" class="container" v-cloak>
@@ -213,9 +213,7 @@
           let season = GetParam("season");
           let additionalQuery = season != null ? `&season=${season}` : ``;
 
-          fetch(
-            `https://rivermouth-apex-status.herokuapp.com/GetStatus?id=${psnId}${additionalQuery}`
-          )
+          fetch(`/GetStatus?id=${psnId}${additionalQuery}`)
             .then((res) => res.json())
             .then((ret) => {
               if (typeof ret === null) {
@@ -279,10 +277,10 @@
         data.forEach((row) => {
           items.push({
             x: MakeDateStr(String(row.date)),
-            y: row.rankscore,
+            y: row.rankScore,
             group: 3,
             label: {
-              content: row.rankscore,
+              content: row.rankScore,
               className: "my-data",
             },
           });
@@ -331,7 +329,7 @@
         let season = select.value;
 
         fetch(
-          `https://rivermouth-apex-status.herokuapp.com/GetHistory?id=${app.psnId}&season=${season}&rank=${app.rankValue}`
+          `/GetHistory?id=${app.psnId}&season=${season}&rank=${app.rankValue}`
         )
           .then((res) => res.json())
           .then((ret) => {
