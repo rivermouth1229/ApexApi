@@ -257,12 +257,12 @@
           { id: 4, rank: 12000, name: "predator" }, // red: 4
         ];
 
-        let items = new vis.DataSet();
+        let items = [];
         let groups = new vis.DataSet();
         tiers.forEach((tier) => {
           // データに境界線となるデータを追加
-          items.add({ x: start, y: tier.rank, group: tier.id });
-          items.add({ x: end, y: tier.rank, group: tier.id });
+          items.push({ x: start, y: tier.rank, group: tier.id });
+          items.push({ x: end, y: tier.rank, group: tier.id });
 
           // スタイル用にグループを作成
           groups.add({
@@ -277,7 +277,7 @@
 
         // ランクデータの作成
         data.forEach((row) => {
-          items.add({
+          items.push({
             x: MakeDateStr(String(row.date)),
             y: row.rankscore,
             group: 3,
