@@ -29,7 +29,7 @@ app.get("/GetStatus", cors(), async (req, res) => {
   const userDataToday = await UserData.findFirst({
     where: {
       user: { psnId: psnId },
-      date: String(today),
+      date: Number(today),
     },
   });
   if (userDataToday) {
@@ -58,7 +58,7 @@ app.get("/GetStatus", cors(), async (req, res) => {
             },
           },
         },
-        date: String(today),
+        date: Number(today),
         rankScore: apexStatus.rankValue,
       },
     });
@@ -73,8 +73,8 @@ app.get("/GetStatus", cors(), async (req, res) => {
     where: {
       user: { psnId: psnId },
       AND: [
-        { date: { gte: String(seasonData.start) } },
-        { date: { lte: String(seasonData.end) } },
+        { date: { gte: Number(seasonData.start) } },
+        { date: { lte: Number(seasonData.end) } },
       ],
     },
   });
@@ -103,8 +103,8 @@ app.get("/GetHistory", cors(), async (req, res) => {
     where: {
       user: { psnId: psnId },
       AND: [
-        { date: { gte: String(seasonData.start) } },
-        { date: { lte: String(seasonData.end) } },
+        { date: { gte: Number(seasonData.start) } },
+        { date: { lte: Number(seasonData.end) } },
       ],
     },
   });
