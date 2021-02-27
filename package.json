@@ -23,7 +23,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "format": "prettier -w '*.js' '**/*.js' 'html/*.html'"
+    "format": "prettier -w \"**/*.{js,html}\""
   },
   "author": "",
   "license": "MIT"

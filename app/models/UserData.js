@@ -1,2 +1,2 @@
-const { prisma } = require('./prisma/PrismaClient')
+const { prisma } = require("./prisma/PrismaClient");
 exports.UserData = prisma.userData;
