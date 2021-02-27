@@ -10,7 +10,7 @@ CREATE TABLE "users" (
 CREATE TABLE "userdata" (
     "userid" INTEGER NOT NULL,
     "rankscore" INTEGER NOT NULL,
-    "date" TEXT NOT NULL
+    "date" INTEGER NOT NULL
 );
 
 -- CreateTable
