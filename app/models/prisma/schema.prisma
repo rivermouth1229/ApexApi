@@ -10,9 +10,7 @@ generator client {
 model User {
   @@map(name: "users")
   id Int @id @default(autoincrement())
-  psnId String @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  psnId String @unique @map("psnid")
 }
 
 // 後でこちらに変更したい
@@ -28,13 +26,11 @@ model User {
 // 後でScoreLogに置き換えたい
 model userData {
   @@map(name: "userdata")
-  id Int @id @default(autoincrement())
+  @@unique([userId, date]) // uniqueになるカラムが必要なのでこうしたが、運用中のDBがそうなっているのか心配
   user User @relation(fields: [userId], references: [id])
-  userId Int
-  rankScore Int
+  userId Int @map("userid")
+  rankScore Int @map("rankscore")
   date String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model ScoreLog {

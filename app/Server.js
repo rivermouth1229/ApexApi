@@ -4,10 +4,13 @@
 var express = require("express");
 var app = express();
 var cors = require("cors");
+require("date-utils");
 
 // 自作モジュール
 var apex = require("./server/Apex.js");
 var dal = require("./server/DAL.js");
+const { UserData } = require("./models/UserData");
+const { ApexStatus } = require("./models/ApexStatus");
 
 // Set static path for javascript node_modules
 app.use("/scripts", express.static(__dirname + "/../node_modules/"));
@@ -16,43 +19,74 @@ app.use("/scripts", express.static(__dirname + "/../node_modules/"));
 app.use(express.static("app/html"));
 
 // Get Apex Status Json Data
-app.get("/GetStatus", cors(), (req, res) => {
+app.get("/GetStatus", cors(), async (req, res) => {
   let psnId = req.query.id;
   let season = req.query.season;
   console.log(`GetStatus called. ID: ${psnId}, Season: ${season}`);
 
-  apex
-    .getStatus(psnId)
-    .then((data) => {
-      // 使いやすいように整形
-      let adjustedData = apex.adjust(data);
-
-      // ステータス履歴の取得
-      dal
-        .getRankScoreHistory(psnId, adjustedData.rankValue, season)
-        .then((historyData) => {
-          // レスポンスするデータに履歴データを追加
-          adjustedData.historyData = historyData;
-
-          // シーズンに関するデータを付与
-          adjustedData.seasonData = dal.getSeasonData(season);
-
-          // Httpメソッドのレスポンス
-          res.json(adjustedData);
-        })
-        .catch((e) => {
-          console.error(e);
-          res.send({});
-        });
-    })
-    .catch((e) => {
-      console.error(e);
-      res.send({});
+  const apexStatus = await ApexStatus.fetchStatus(psnId);
+  const today = new Date().toFormat("YYYYMMDD");
+  const userDataToday = await UserData.findFirst({
+    where: {
+      user: { psnId: psnId },
+      date: String(today),
+    },
+  });
+  if (userDataToday) {
+    await UserData.update({
+      where: {
+        // userdataにidが無いのでこうしないといけない
+        userId_date: {
+          userId: userDataToday.userId,
+          date: userDataToday.date,
+        },
+      },
+      data: {
+        rankScore: apexStatus.rankValue,
+      },
     });
+  } else {
+    await UserData.create({
+      data: {
+        user: {
+          connectOrCreate: {
+            where: {
+              psnId: psnId,
+            },
+            create: {
+              psnId: psnId,
+            },
+          },
+        },
+        date: String(today),
+        rankScore: apexStatus.rankValue,
+      },
+    });
+  }
+
+  const seasonData = dal.getSeasonData(season);
+  const historyData = await UserData.findMany({
+    select: {
+      date: true,
+      rankScore: true,
+    },
+    where: {
+      user: { psnId: psnId },
+      AND: [
+        { date: { gte: String(seasonData.start) } },
+        { date: { lte: String(seasonData.end) } },
+      ],
+    },
+  });
+  const response = {};
+  Object.assign(response, apexStatus);
+  response.historyData = historyData;
+  response.seasonData = seasonData;
+  res.json(response);
 });
 
 // Get Apex Rank Score History
-app.get("/GetHistory", cors(), (req, res) => {
+app.get("/GetHistory", cors(), async (req, res) => {
   let psnId = req.query.id;
   let season = req.query.season;
   let rank = req.query.rank;
@@ -60,20 +94,24 @@ app.get("/GetHistory", cors(), (req, res) => {
     `GetHistory called. ID: ${psnId}, Season: ${season}, Rank: ${rank}`
   );
 
-  dal
-    .getRankScoreHistory(psnId, rank, season)
-    .then((data) => {
-      let ret = {
-        historyData: data,
-        seasonData: dal.getSeasonData(season),
-      };
-
-      res.json(ret);
-    })
-    .catch((e) => {
-      console.error(e);
-      res.send({});
-    });
+  const seasonData = dal.getSeasonData(season);
+  const historyData = await UserData.findMany({
+    select: {
+      date: true,
+      rankScore: true,
+    },
+    where: {
+      user: { psnId: psnId },
+      AND: [
+        { date: { gte: String(seasonData.start) } },
+        { date: { lte: String(seasonData.end) } },
+      ],
+    },
+  });
+  const response = {};
+  response.historyData = historyData;
+  response.seasonData = seasonData;
+  res.json(response);
 });
 
 // Save data of all users in db
