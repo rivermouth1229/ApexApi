@@ -47,12 +47,12 @@ function AdjustStatusData(apiData) {
 
 // シーズン事の期間
 exports.seasons = [
-  { id: 1, seasonStart: 20200801, seasonEnd: 20200816 },
-  { id: 2, seasonStart: 20200817, seasonEnd: 20200929 },
-  { id: 3, seasonStart: 20200930, seasonEnd: 20201104 },
-  { id: 4, seasonStart: 20201105, seasonEnd: 20201215 },
-  { id: 5, seasonStart: 20201216, seasonEnd: 20210202 },
-  { id: 6, seasonStart: 20210203, seasonEnd: 20210317 },
+  { id: 1, seasonStart: "2020-08-01", seasonEnd: "2020-08-16" },
+  { id: 2, seasonStart: "2020-08-17", seasonEnd: "2020-09-29" },
+  { id: 3, seasonStart: "2020-09-30", seasonEnd: "2020-11-04" },
+  { id: 4, seasonStart: "2020-11-05", seasonEnd: "2020-12-15" },
+  { id: 5, seasonStart: "2020-12-16", seasonEnd: "2021-02-02" },
+  { id: 6, seasonStart: "2021-02-03", seasonEnd: "2021-03-17" },
 ];
 
 // 現在のシーズン

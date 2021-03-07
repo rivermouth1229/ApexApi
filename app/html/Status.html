@@ -14,7 +14,6 @@
     />
     <style>
       body {
-        width: 100%;
         background-color: #232323;
         color: white;
       }
@@ -89,8 +88,13 @@
         margin-top: 20px;
       }
 
-      .my-data {
+      .my-data-label {
         fill: white;
+      }
+
+      .my-data {
+        fill: #98fb98;
+        stroke: #98fb98;
       }
 
       .bronze {
@@ -241,57 +245,57 @@
 
         // タグ
         let container = document.getElementById("graph");
-
-        // ランク帯別ラインの設定
-        let start = MakeDateStr(String(seasonData.start - 1));
-        let end = MakeDateStr(String(seasonData.end + 2));
-
-        let tiers = [
-          { id: 7, rank: 1200, name: "silver" }, // darkblue: 7
-          { id: 1, rank: 2800, name: "gold" }, // gold: 1
-          { id: 5, rank: 4800, name: "platinum" }, // skyblue: 5
-          { id: 0, rank: 7200, name: "diamond" }, // blue: 0
-          { id: 2, rank: 10000, name: "master" }, // purple: 2
-          { id: 4, rank: 12000, name: "predator" }, // red: 4
-        ];
-
         let items = [];
         let groups = new vis.DataSet();
+        let tiers = [
+          { rank: 1200, name: "silver" },
+          { rank: 2800, name: "gold" },
+          { rank: 4800, name: "platinum" },
+          { rank: 7200, name: "diamond" },
+          { rank: 10000, name: "master" },
+          { rank: 12000, name: "predator" },
+        ];
+
+        // ランク帯別ラインの設定
         tiers.forEach((tier) => {
           // データに境界線となるデータを追加
-          items.push({ x: start, y: tier.rank, group: tier.id });
-          items.push({ x: end, y: tier.rank, group: tier.id });
-
+          items.push({ x: seasonData.start, y: tier.rank, group: tier.name });
+          items.push({ x: seasonData.end, y: tier.rank, group: tier.name });
           // スタイル用にグループを作成
           groups.add({
-            id: tier.id,
+            id: tier.name,
             content: tier.name,
-            //className: tier.name,
+            className: tier.name,
             options: {
-              shaded: { orientation: "bottom" },
+              drawPoints: false,
             },
           });
+        });
+
+        groups.add({
+          id: "my-data",
+          content: "my-data",
+          className: "my-data",
         });
 
         // ランクデータの作成
         data.forEach((row) => {
           items.push({
-            x: MakeDateStr(String(row.date)),
+            x: row.date,
             y: row.rankScore,
-            group: 3,
+            group: "my-data",
             label: {
               content: row.rankScore,
-              className: "my-data",
+              className: "my-data-label",
             },
           });
         });
 
         // 表示設定
         let options = {
-          //legend: true,
           interpolation: false,
-          min: MakeDateStr(String(seasonData.start)),
-          max: MakeDateStr(String(seasonData.end + 1)),
+          min: seasonData.start,
+          max: seasonData.end,
           dataAxis: { left: { range: { min: 0, max: 12000 } } },
         };
 
@@ -306,11 +310,6 @@
         if (!results) return null;
         if (!results[2]) return "";
         return decodeURIComponent(results[2].replace(/\+/g, " "));
-      }
-
-      function MakeDateStr(str) {
-        let tmp = str.slice(0, 4) + "-" + str.slice(4);
-        return tmp.slice(0, 7) + "-" + tmp.slice(7);
       }
 
       function ToggleLabel() {
