@@ -8,37 +8,24 @@ generator client {
 }
 
 model User {
+  id        Int        @id @default(autoincrement())
+  psnId     String     @unique @map(name: "psn_id")
+  scoreLogs ScoreLog[]
+  createdAt DateTime   @default(now()) @map(name: "created_at")
+  updatedAt DateTime   @updatedAt @map(name: "updated_at")
+
   @@map(name: "users")
-  id Int @id @default(autoincrement())
-  psnId String @unique @map("psnid")
-}
-
-// 後でこちらに変更したい
-// model User {
-//   @@map(name: "users")
-//   id Int @id @default(autoincrement())
-//   psnId String @unique @map(name: "psn_id")
-//   scoreLogs ScoreLog[]
-//   createdAt DateTime @default(now()) @map(name: "created_at")
-//   updatedAt DateTime @updatedAt @map(name: "updated_at")
-// }
-
-// 後でScoreLogに置き換えたい
-model userData {
-  @@map(name: "userdata")
-  @@unique([userId, date]) // uniqueになるカラムが必要なのでこうしたが、運用中のDBがそうなっているのか心配
-  user User @relation(fields: [userId], references: [id])
-  userId Int @map("userid")
-  rankScore Int @map("rankscore")
-  date Int
 }
 
 model ScoreLog {
-  @@map(name: "score_logs")
-  id Int @id @default(autoincrement())
-  user User @relation(fields: [userId], references: [id])
-  userId Int @map(name: "user_id")
-  rankScore Int @map(name: "rank_score")
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int      @map(name: "user_id")
+  rankScore Int      @map(name: "rank_score")
+  date DateTime @db.Date @map(name: "date")
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
+
+  @@map(name: "score_logs")
+  @@unique([userId, date], name: "score_logs_user_id_date_uniuqe_constraint")
 }

@@ -9,7 +9,7 @@ require("date-utils");
 // 自作モジュール
 var apex = require("./server/Apex.js");
 var dal = require("./server/DAL.js");
-const { UserData } = require("./models/UserData");
+const { ScoreLog } = require("./models/ScoreLog");
 const { ApexStatus } = require("./models/ApexStatus");
 
 // Set static path for javascript node_modules
@@ -25,28 +25,24 @@ app.get("/GetStatus", cors(), async (req, res) => {
   console.log(`GetStatus called. ID: ${psnId}, Season: ${season}`);
 
   const apexStatus = await ApexStatus.fetchStatus(psnId);
-  const today = new Date().toFormat("YYYYMMDD");
-  const userDataToday = await UserData.findFirst({
+  const today = new Date();
+  const scoreLogToday = await ScoreLog.findFirst({
     where: {
       user: { psnId: psnId },
-      date: Number(today),
+      date: today,
     },
   });
-  if (userDataToday) {
-    await UserData.update({
+  if (scoreLogToday) {
+    await ScoreLog.update({
       where: {
-        // userdataにidが無いのでこうしないといけない
-        userId_date: {
-          userId: userDataToday.userId,
-          date: userDataToday.date,
-        },
+        id: scoreLogToday.id,
       },
       data: {
         rankScore: apexStatus.rankValue,
       },
     });
   } else {
-    await UserData.create({
+    await ScoreLog.create({
       data: {
         user: {
           connectOrCreate: {
@@ -58,14 +54,14 @@ app.get("/GetStatus", cors(), async (req, res) => {
             },
           },
         },
-        date: Number(today),
+        date: today,
         rankScore: apexStatus.rankValue,
       },
     });
   }
 
   const seasonData = dal.getSeasonData(season);
-  const historyData = await UserData.findMany({
+  const historyData = await ScoreLog.findMany({
     select: {
       date: true,
       rankScore: true,
@@ -73,10 +69,13 @@ app.get("/GetStatus", cors(), async (req, res) => {
     where: {
       user: { psnId: psnId },
       AND: [
-        { date: { gte: Number(seasonData.start) } },
-        { date: { lte: Number(seasonData.end) } },
+        { date: { gte: new Date(seasonData.start) } },
+        { date: { lte: new Date(seasonData.end) } },
       ],
     },
+  });
+  historyData.forEach((x) => {
+    x.date = x.date.toFormat("YYYY-MM-DD");
   });
   const response = {};
   Object.assign(response, apexStatus);
@@ -95,7 +94,7 @@ app.get("/GetHistory", cors(), async (req, res) => {
   );
 
   const seasonData = dal.getSeasonData(season);
-  const historyData = await UserData.findMany({
+  const historyData = await ScoreLog.findMany({
     select: {
       date: true,
       rankScore: true,
@@ -103,14 +102,17 @@ app.get("/GetHistory", cors(), async (req, res) => {
     where: {
       user: { psnId: psnId },
       AND: [
-        { date: { gte: Number(seasonData.start) } },
-        { date: { lte: Number(seasonData.end) } },
+        { date: { gte: new Date(seasonData.start) } },
+        { date: { lte: new Date(seasonData.end) } },
       ],
     },
   });
   const response = {};
   response.historyData = historyData;
   response.seasonData = seasonData;
+  historyData.forEach((x) => {
+    x.date = x.date.toFormat("YYYY-MM-DD");
+  });
   res.json(response);
 });
 
