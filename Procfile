@@ -1,2 +1,2 @@
-npx prisma migrate deploy
+release: npx prisma migrate deploy
 web: node app/Server.js
